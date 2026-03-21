@@ -1,0 +1,35 @@
+/* VinciFlow Theme: anchor-card-wide — Full width with avatar card + ticker */
+
+#{{ID}} .ancw {
+  position: relative;
+  width: 100vw;
+  font-family: {{FONT_FAMILY}}, 'Segoe UI', system-ui, sans-serif;
+}
+
+#{{ID}} .ancw-topbar {
+  display: flex; align-items: stretch;
+  background: linear-gradient(135deg, rgba(17, 24, 39, calc({{OPACITY}} / 100)), rgba(31, 41, 55, calc({{OPACITY}} / 100)));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#{{ID}} .ancw-card {
+  position: relative; display: inline-flex; flex-shrink: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#{{ID}} .anchor-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #111827, #1f2937); opacity: calc({{OPACITY}} / 100); pointer-events: none }
+#{{ID}} .anchor-stripe { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: {{PRIMARY_COLOR}} }
+#{{ID}} .anchor-content { position: relative; z-index: 1; display: flex; align-items: center; gap: 16px; padding: 14px 22px 14px 20px }
+#{{ID}} .anchor-avatar { width: {{AVATAR_WIDTH}}px; height: {{AVATAR_HEIGHT}}px; border-radius: 50%; object-fit: cover; border: 3px solid {{PRIMARY_COLOR}}; flex-shrink: 0; background: rgba(255,255,255,0.06) }
+#{{ID}} .anchor-avatar:not([src]),#{{ID}} .anchor-avatar[src=""],#{{ID}} .anchor-avatar[src="./"]{display:none!important}
+#{{ID}} .anchor-text { display: flex; flex-direction: column; gap: 3px }
+#{{ID}} .anchor-title { font-weight: 700; font-size: {{TITLE_SIZE}}px; line-height: 1.15; color: {{TITLE_COLOR}}; white-space: nowrap }
+#{{ID}} .anchor-subtitle { font-size: {{SUBTITLE_SIZE}}px; color: {{SUBTITLE_COLOR}}; opacity: 0.85; white-space: nowrap }
+
+#{{ID}} .ancw-headline { flex: 1; display: flex; align-items: center; padding: 0 24px; font-size: calc({{SUBTITLE_SIZE}}px + 2px); color: {{SUBTITLE_COLOR}}; overflow: hidden; white-space: nowrap }
+
+#{{ID}} .ancw-ticker-bar { display: flex; align-items: stretch; background: {{PRIMARY_COLOR}}; overflow: hidden }
+#{{ID}} .ancw-ticker-label { display: flex; align-items: center; padding: 5px 14px; background: rgba(0,0,0,0.25); color: #fff; font-weight: 900; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0 }
+#{{ID}} .ancw-ticker-track { flex: 1; overflow: hidden; display: flex; align-items: center }
+#{{ID}} .ancw-ticker-scroll { display: flex; gap: 80px; white-space: nowrap; animation: ancw-scroll-{{ID}} 25s linear infinite; font-size: 13px; font-weight: 600; color: #fff; padding: 5px 0 }
+@keyframes ancw-scroll-{{ID}} { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }

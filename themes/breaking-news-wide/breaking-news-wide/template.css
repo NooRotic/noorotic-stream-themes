@@ -1,0 +1,136 @@
+/* VinciFlow Theme: breaking-news-wide — Full width breaking bar with ticker */
+
+#{{ID}} .brkw {
+  position: relative;
+  width: 100vw;
+  font-family: {{FONT_FAMILY}}, 'Segoe UI', system-ui, sans-serif;
+}
+
+#{{ID}} .brkw-topbar {
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(135deg, rgba(26, 26, 26, calc({{OPACITY}} / 100)), rgba(13, 13, 13, calc({{OPACITY}} / 100)));
+  border-bottom: 2px solid {{PRIMARY_COLOR}};
+}
+
+#{{ID}} .brkw-card {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+#{{ID}} .brk-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+  opacity: calc({{OPACITY}} / 100);
+  pointer-events: none;
+}
+
+#{{ID}} .brk-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+#{{ID}} .brk-badge {
+  display: flex;
+  align-items: center;
+  padding: 12px 18px;
+  background: {{PRIMARY_COLOR}};
+  color: #fff;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: brkw-pulse-{{ID}} 2s ease-in-out infinite;
+}
+
+@keyframes brkw-pulse-{{ID}} {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+#{{ID}} .brk-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 12px 22px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#{{ID}} .brk-title {
+  font-weight: 700;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.15;
+  color: {{TITLE_COLOR}};
+  white-space: nowrap;
+}
+
+#{{ID}} .brk-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+#{{ID}} .brkw-headline {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  font-size: calc({{SUBTITLE_SIZE}}px + 2px);
+  color: {{SUBTITLE_COLOR}};
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#{{ID}} .brkw-ticker-bar {
+  display: flex;
+  align-items: stretch;
+  background: {{PRIMARY_COLOR}};
+  overflow: hidden;
+}
+
+#{{ID}} .brkw-ticker-label {
+  display: flex;
+  align-items: center;
+  padding: 5px 14px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#{{ID}} .brkw-ticker-track {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+#{{ID}} .brkw-ticker-scroll {
+  display: flex;
+  gap: 80px;
+  white-space: nowrap;
+  animation: brkw-scroll-{{ID}} 22s linear infinite;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+  padding: 5px 0;
+}
+
+@keyframes brkw-scroll-{{ID}} {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

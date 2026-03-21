@@ -1,0 +1,19 @@
+{
+  "name": "Headline Ticker Wide",
+  "description": "Full-width bar with rotating headline card, orbiting glow, and scrolling ticker.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#00ff88",
+    "SECONDARY_COLOR": "#0a0a14",
+    "TITLE_COLOR": "#ffffff",
+    "SUBTITLE_COLOR": "#aaaaaa",
+    "OPACITY": 94,
+    "RADIUS": 0,
+    "FONT_FAMILY": "Inter",
+    "TITLE_SIZE": 30,
+    "SUBTITLE_SIZE": 16,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Breaking — BowlTV Wide",
+  "description": "Full-width BowlTV bar with cyan scrolling ticker and logo badge.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#51BFE2",
+    "SECONDARY_COLOR": "#368096",
+    "TITLE_COLOR": "#FFF2F2",
+    "SUBTITLE_COLOR": "#CCC2C2",
+    "OPACITY": 95,
+    "RADIUS": 0,
+    "FONT_FAMILY": "Montserrat",
+    "TITLE_SIZE": 34,
+    "SUBTITLE_SIZE": 18,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

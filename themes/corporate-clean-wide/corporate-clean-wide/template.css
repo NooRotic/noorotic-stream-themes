@@ -1,0 +1,34 @@
+/* VinciFlow Theme: corporate-clean-wide — Full width light card with gradient ticker */
+
+#{{ID}} .corpw {
+  position: relative;
+  width: 100vw;
+  font-family: {{FONT_FAMILY}}, 'Segoe UI', system-ui, sans-serif;
+}
+
+#{{ID}} .corpw-topbar {
+  display: flex; align-items: stretch;
+  background: rgba(255, 255, 255, calc({{OPACITY}} / 100));
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+}
+
+#{{ID}} .corpw-card {
+  position: relative; display: inline-flex; flex-shrink: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+#{{ID}} .corp-bg { position: absolute; inset: 0; background: #fff; opacity: calc({{OPACITY}} / 100); pointer-events: none }
+#{{ID}} .corp-content { position: relative; z-index: 1; display: flex; align-items: center; gap: 14px; padding: 16px 24px }
+#{{ID}} .corp-avatar { width: {{AVATAR_WIDTH}}px; height: {{AVATAR_HEIGHT}}px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #f3f4f6 }
+#{{ID}} .corp-avatar:not([src]),#{{ID}} .corp-avatar[src=""],#{{ID}} .corp-avatar[src="./"]{display:none!important}
+#{{ID}} .corp-text { display: flex; flex-direction: column; gap: 2px }
+#{{ID}} .corp-title { font-weight: 600; font-size: {{TITLE_SIZE}}px; line-height: 1.2; color: {{TITLE_COLOR}}; white-space: nowrap }
+#{{ID}} .corp-subtitle { font-size: {{SUBTITLE_SIZE}}px; color: {{SUBTITLE_COLOR}}; white-space: nowrap }
+
+#{{ID}} .corpw-headline { flex: 1; display: flex; align-items: center; padding: 0 24px; font-size: calc({{SUBTITLE_SIZE}}px + 2px); color: {{SUBTITLE_COLOR}}; overflow: hidden; white-space: nowrap }
+
+#{{ID}} .corpw-ticker-bar { display: flex; align-items: stretch; background: linear-gradient(90deg, {{PRIMARY_COLOR}}, {{SECONDARY_COLOR}}); overflow: hidden }
+#{{ID}} .corpw-ticker-label { display: flex; align-items: center; padding: 5px 14px; background: rgba(0,0,0,0.15); color: #fff; font-weight: 900; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0 }
+#{{ID}} .corpw-ticker-track { flex: 1; overflow: hidden; display: flex; align-items: center }
+#{{ID}} .corpw-ticker-scroll { display: flex; gap: 80px; white-space: nowrap; animation: corpw-scroll-{{ID}} 25s linear infinite; font-size: 13px; font-weight: 600; color: #fff; padding: 5px 0 }
+@keyframes corpw-scroll-{{ID}} { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }

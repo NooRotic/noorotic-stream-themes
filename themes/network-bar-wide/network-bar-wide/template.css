@@ -1,0 +1,129 @@
+/* VinciFlow Theme: network-bar-wide — Full width CNN-style with scrolling ticker */
+/* Matrix/cyberpunk palette */
+
+#{{ID}} .nbarw {
+  position: relative;
+  width: 100vw;
+  font-family: {{FONT_FAMILY}}, 'Orbitron', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Top bar ── */
+#{{ID}} .nbarw-topbar {
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(135deg, rgba(10, 10, 10, calc({{OPACITY}} / 100)), rgba(20, 20, 20, calc({{OPACITY}} / 100)));
+  border-bottom: 1px solid rgba(0, 255, 136, 0.15);
+}
+
+#{{ID}} .nbarw-accent-edge {
+  width: 4px;
+  flex-shrink: 0;
+  background: {{PRIMARY_COLOR}};
+  box-shadow: 0 0 12px {{PRIMARY_COLOR}};
+}
+
+/* Original card style embedded */
+#{{ID}} .nbarw-card {
+  display: inline-flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#{{ID}} .nbar-accent {
+  width: 6px;
+  flex-shrink: 0;
+  background: {{PRIMARY_COLOR}};
+  box-shadow: 0 0 12px {{PRIMARY_COLOR}};
+}
+
+#{{ID}} .nbar-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 24px;
+}
+
+#{{ID}} .nbar-title {
+  font-weight: 700;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.1;
+  color: {{TITLE_COLOR}};
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 8px {{PRIMARY_COLOR}}, 0 0 2px #fff;
+  white-space: nowrap;
+}
+
+#{{ID}} .nbar-sep {
+  color: {{PRIMARY_COLOR}};
+  font-size: {{TITLE_SIZE}}px;
+  opacity: 0.5;
+  font-weight: 300;
+}
+
+#{{ID}} .nbar-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.9;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Headline text fills remaining width */
+#{{ID}} .nbarw-headline {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  font-size: calc({{SUBTITLE_SIZE}}px + 2px);
+  color: {{SUBTITLE_COLOR}};
+  letter-spacing: 0.03em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ── Ticker bar ── */
+#{{ID}} .nbarw-ticker-bar {
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(90deg, rgba(0, 0, 0, calc({{OPACITY}} / 100)), rgba(15, 15, 15, calc({{OPACITY}} / 100)));
+  overflow: hidden;
+}
+
+#{{ID}} .nbarw-ticker-label {
+  display: flex;
+  align-items: center;
+  padding: 6px 14px;
+  background: {{PRIMARY_COLOR}};
+  color: #000;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#{{ID}} .nbarw-ticker-track {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+#{{ID}} .nbarw-ticker-scroll {
+  display: flex;
+  gap: 80px;
+  white-space: nowrap;
+  animation: nbarw-scroll-{{ID}} 25s linear infinite;
+  font-size: 14px;
+  color: {{SUBTITLE_COLOR}};
+  letter-spacing: 0.02em;
+  padding: 6px 0;
+}
+
+@keyframes nbarw-scroll-{{ID}} {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

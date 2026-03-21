@@ -1,0 +1,80 @@
+/* VinciFlow Theme: neon-pulse-wide — Full width with neon card + glowing ticker */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
+
+#{{ID}} .neonw {
+  position: relative;
+  width: 100vw;
+  font-family: {{FONT_FAMILY}}, 'Orbitron', system-ui, sans-serif;
+}
+
+#{{ID}} .neonw-topbar {
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(135deg, rgba(5, 5, 16, calc({{OPACITY}} / 100)), rgba(10, 10, 26, calc({{OPACITY}} / 100)));
+  border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+}
+
+#{{ID}} .neonw-card-wrap {
+  flex-shrink: 0;
+  padding: 8px 0 8px 8px;
+}
+
+/* Original neon-pulse card */
+#{{ID}} .neon-card {
+  position: relative;
+  display: inline-block;
+  border-radius: {{RADIUS}}px;
+  overflow: visible;
+  animation: neonw-breathe-{{ID}} 3s ease-in-out infinite;
+}
+
+@keyframes neonw-breathe-{{ID}} {
+  0%, 100% { filter: drop-shadow(0 0 8px {{PRIMARY_COLOR}}) drop-shadow(0 0 20px {{PRIMARY_COLOR}}) }
+  50% { filter: drop-shadow(0 0 16px {{PRIMARY_COLOR}}) drop-shadow(0 0 40px {{PRIMARY_COLOR}}) drop-shadow(0 0 60px {{PRIMARY_COLOR}}) }
+}
+
+#{{ID}} .neon-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #050510, #0a0a1a); opacity: calc({{OPACITY}} / 100); border-radius: inherit; pointer-events: none }
+#{{ID}} .neon-glow-border { position: absolute; inset: -2px; border-radius: inherit; background: linear-gradient(var(--neon-angle-w-{{ID}}, 0deg), {{PRIMARY_COLOR}}, {{SECONDARY_COLOR}}, #ff00ff, {{PRIMARY_COLOR}}); z-index: 0; animation: neonw-border-spin-{{ID}} 4s linear infinite }
+@keyframes neonw-border-spin-{{ID}} { 0% { --neon-angle-w-{{ID}}: 0deg } 100% { --neon-angle-w-{{ID}}: 360deg } }
+#{{ID}} .neon-glow-border::before { content: ''; position: absolute; inset: 2px; background: linear-gradient(135deg, #050510, #0a0a1a); border-radius: inherit; z-index: 1 }
+#{{ID}} .neon-content { position: relative; z-index: 2; padding: 14px 24px; display: flex; flex-direction: column; gap: 3px }
+#{{ID}} .neon-title { font-weight: 900; font-size: {{TITLE_SIZE}}px; line-height: 1.1; color: #fff; text-transform: uppercase; letter-spacing: 0.1em; text-shadow: 0 0 7px {{PRIMARY_COLOR}}, 0 0 20px {{PRIMARY_COLOR}}, 0 0 42px {{PRIMARY_COLOR}}; animation: neonw-flicker-{{ID}} 5s ease-in-out infinite; white-space: nowrap }
+@keyframes neonw-flicker-{{ID}} { 0%,19%,21%,23%,25%,54%,56%,100% { text-shadow: 0 0 7px {{PRIMARY_COLOR}}, 0 0 20px {{PRIMARY_COLOR}}, 0 0 42px {{PRIMARY_COLOR}}; opacity: 1 } 20%,24%,55% { text-shadow: none; opacity: 0.85 } }
+#{{ID}} .neon-subtitle { font-size: {{SUBTITLE_SIZE}}px; color: {{SUBTITLE_COLOR}}; letter-spacing: 0.06em; opacity: 0.8; white-space: nowrap }
+
+#{{ID}} .neonw-headline {
+  flex: 1; display: flex; align-items: center; padding: 0 24px;
+  font-size: calc({{SUBTITLE_SIZE}}px + 2px); color: {{SUBTITLE_COLOR}};
+  overflow: hidden; white-space: nowrap; letter-spacing: 0.03em;
+}
+
+/* Ticker with neon glow */
+#{{ID}} .neonw-ticker-bar {
+  display: flex; align-items: stretch;
+  background: linear-gradient(90deg, rgba(5, 5, 16, calc({{OPACITY}} / 100)), rgba(10, 10, 26, calc({{OPACITY}} / 100)));
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 255, 136, 0.15);
+}
+
+#{{ID}} .neonw-ticker-label {
+  display: flex; align-items: center; padding: 6px 14px;
+  background: {{PRIMARY_COLOR}}; color: #000; font-weight: 900;
+  font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+  white-space: nowrap; flex-shrink: 0;
+  box-shadow: 0 0 12px {{PRIMARY_COLOR}};
+}
+
+#{{ID}} .neonw-ticker-track { flex: 1; overflow: hidden; display: flex; align-items: center }
+
+#{{ID}} .neonw-ticker-scroll {
+  display: flex; gap: 80px; white-space: nowrap;
+  animation: neonw-scroll-{{ID}} 25s linear infinite;
+  font-size: 13px; color: {{SUBTITLE_COLOR}}; padding: 6px 0;
+  text-shadow: 0 0 4px {{PRIMARY_COLOR}};
+}
+
+@keyframes neonw-scroll-{{ID}} {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
