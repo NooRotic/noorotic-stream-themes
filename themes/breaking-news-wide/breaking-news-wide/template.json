@@ -1,0 +1,19 @@
+{
+  "name": "Breaking News Wide",
+  "description": "Full-width breaking news bar with red ticker and scrolling alerts.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#dc2626",
+    "SECONDARY_COLOR": "#1a1a1a",
+    "TITLE_COLOR": "#ffffff",
+    "SUBTITLE_COLOR": "#d1d5db",
+    "OPACITY": 94,
+    "RADIUS": 0,
+    "FONT_FAMILY": "Segoe UI",
+    "TITLE_SIZE": 38,
+    "SUBTITLE_SIZE": 20,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

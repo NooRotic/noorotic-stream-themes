@@ -1,0 +1,21 @@
+{
+  "name": "Anchor Card Wide",
+  "description": "Full-width bar with avatar card embedded and colored scrolling ticker.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#3b82f6",
+    "SECONDARY_COLOR": "#111827",
+    "TITLE_COLOR": "#f9fafb",
+    "SUBTITLE_COLOR": "#d1d5db",
+    "OPACITY": 90,
+    "RADIUS": 0,
+    "FONT_FAMILY": "Segoe UI",
+    "TITLE_SIZE": 36,
+    "SUBTITLE_SIZE": 20,
+    "AVATAR_WIDTH": 64,
+    "AVATAR_HEIGHT": 64,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

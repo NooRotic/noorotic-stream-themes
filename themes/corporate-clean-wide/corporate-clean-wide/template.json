@@ -1,0 +1,21 @@
+{
+  "name": "Corporate Clean Wide",
+  "description": "Full-width light bar with avatar card and gradient scrolling ticker.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#2563eb",
+    "SECONDARY_COLOR": "#7c3aed",
+    "TITLE_COLOR": "#111827",
+    "SUBTITLE_COLOR": "#6b7280",
+    "OPACITY": 96,
+    "RADIUS": 0,
+    "FONT_FAMILY": "Segoe UI",
+    "TITLE_SIZE": 34,
+    "SUBTITLE_SIZE": 18,
+    "AVATAR_WIDTH": 52,
+    "AVATAR_HEIGHT": 52,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

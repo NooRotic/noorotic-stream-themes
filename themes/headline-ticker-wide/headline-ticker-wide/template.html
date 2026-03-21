@@ -1,0 +1,53 @@
+<div class="htkw" data-slt-root>
+  <div class="htkw-topbar">
+    <div class="htkw-card">
+      <div class="htk-bg" aria-hidden="true"></div>
+      <div class="htk-glow-edge" aria-hidden="true"></div>
+      <div class="htk-content">
+        <div class="htk-label">LIVE</div>
+        <div class="htk-text-wrap">
+          <div class="htk-title" data-title>{{TITLE}}</div>
+          <div class="htk-subtitle" data-subtitle>{{SUBTITLE}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="htkw-headline">
+      <span data-headline>{{TITLE}}</span>
+    </div>
+  </div>
+  <div class="htkw-ticker-bar">
+    <div class="htkw-ticker-label">UPDATE</div>
+    <div class="htkw-ticker-track">
+      <div class="htkw-ticker-scroll">
+        <span data-ticker>{{SUBTITLE}} — Headlines rotating — {{TITLE}} — More stories ahead</span>
+        <span data-ticker aria-hidden="true">{{SUBTITLE}} — Headlines rotating — {{TITLE}} — More stories ahead</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById('{{ID}}');
+  if (!root) return;
+  const titleEl = root.querySelector('.htk-title');
+  if (!titleEl) return;
+  let idx = 0;
+  const headlines = ['{{TITLE}}', 'Live Update', 'Just In'];
+  function cycle() {
+    if (headlines.length < 2) return;
+    idx = (idx + 1) % headlines.length;
+    titleEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    titleEl.style.opacity = '0';
+    titleEl.style.transform = 'translateY(-12px)';
+    setTimeout(() => {
+      titleEl.textContent = headlines[idx];
+      titleEl.style.transform = 'translateY(12px)';
+      void titleEl.offsetWidth;
+      titleEl.style.opacity = '1';
+      titleEl.style.transform = 'translateY(0)';
+    }, 420);
+  }
+  setInterval(cycle, 5000);
+})();
+</script>

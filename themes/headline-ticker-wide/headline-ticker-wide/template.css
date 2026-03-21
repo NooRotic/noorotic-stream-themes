@@ -1,0 +1,40 @@
+/* VinciFlow Theme: headline-ticker-wide — Full width with rotating headlines + ticker */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap');
+
+#{{ID}} .htkw {
+  position: relative;
+  width: 100vw;
+  font-family: {{FONT_FAMILY}}, 'Inter', system-ui, sans-serif;
+}
+
+#{{ID}} .htkw-topbar {
+  display: flex; align-items: stretch;
+  background: linear-gradient(135deg, rgba(10, 10, 20, calc({{OPACITY}} / 100)), rgba(18, 18, 31, calc({{OPACITY}} / 100)));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#{{ID}} .htkw-card {
+  position: relative; display: inline-flex; align-items: stretch; flex-shrink: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden;
+}
+
+#{{ID}} .htk-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #0a0a14, #12121f); opacity: calc({{OPACITY}} / 100); pointer-events: none }
+#{{ID}} .htk-glow-edge { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; z-index: 0 }
+#{{ID}} .htk-glow-edge::before { content: ''; position: absolute; width: 120px; height: 120px; background: radial-gradient(circle, {{PRIMARY_COLOR}} 0%, transparent 70%); opacity: 0.7; animation: htkw-orbit-{{ID}} 4s linear infinite }
+@keyframes htkw-orbit-{{ID}} { 0%{top:-60px;left:-60px}25%{top:-60px;left:calc(100% - 60px)}50%{top:calc(100% - 60px);left:calc(100% - 60px)}75%{top:calc(100% - 60px);left:-60px}100%{top:-60px;left:-60px} }
+#{{ID}} .htk-content { position: relative; z-index: 2; display: flex; align-items: center }
+#{{ID}} .htk-label { display: flex; align-items: center; gap: 6px; padding: 14px 16px; background: {{PRIMARY_COLOR}}; color: #000; font-weight: 900; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap }
+#{{ID}} .htk-label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: htkw-dot-{{ID}} 1.5s ease-in-out infinite }
+@keyframes htkw-dot-{{ID}} { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)} }
+#{{ID}} .htk-text-wrap { display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 12px 24px }
+#{{ID}} .htk-title { font-weight: 900; font-size: {{TITLE_SIZE}}px; line-height: 1.15; color: {{TITLE_COLOR}}; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap }
+#{{ID}} .htk-subtitle { font-size: {{SUBTITLE_SIZE}}px; color: {{SUBTITLE_COLOR}}; opacity: 0.8; white-space: nowrap }
+
+#{{ID}} .htkw-headline { flex: 1; display: flex; align-items: center; padding: 0 24px; font-size: calc({{SUBTITLE_SIZE}}px + 2px); color: {{SUBTITLE_COLOR}}; overflow: hidden; white-space: nowrap }
+
+#{{ID}} .htkw-ticker-bar { display: flex; align-items: stretch; background: linear-gradient(90deg, rgba(10,10,20,calc({{OPACITY}}/100)), rgba(18,18,31,calc({{OPACITY}}/100))); overflow: hidden; border-top: 1px solid rgba(0,255,136,0.1) }
+#{{ID}} .htkw-ticker-label { display: flex; align-items: center; padding: 5px 14px; background: {{PRIMARY_COLOR}}; color: #000; font-weight: 900; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0 }
+#{{ID}} .htkw-ticker-track { flex: 1; overflow: hidden; display: flex; align-items: center }
+#{{ID}} .htkw-ticker-scroll { display: flex; gap: 80px; white-space: nowrap; animation: htkw-scroll-{{ID}} 25s linear infinite; font-size: 13px; color: {{SUBTITLE_COLOR}}; padding: 5px 0; text-shadow: 0 0 4px {{PRIMARY_COLOR}} }
+@keyframes htkw-scroll-{{ID}} { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }

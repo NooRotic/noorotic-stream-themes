@@ -1,0 +1,40 @@
+/* VinciFlow Theme: lower-doc-wide — Full width documentary with elegant ticker */
+
+#{{ID}} .ldocw {
+  position: relative;
+  width: 100vw;
+  font-family: {{FONT_FAMILY}}, Georgia, 'Times New Roman', serif;
+}
+
+#{{ID}} .ldocw-topbar {
+  display: flex; align-items: stretch;
+  background: linear-gradient(180deg, rgba(15, 15, 15, calc({{OPACITY}} / 100)), rgba(25, 25, 25, calc({{OPACITY}} / 100)));
+}
+
+#{{ID}} .ldocw-card {
+  position: relative; flex-shrink: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#{{ID}} .ldoc-bg { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15,15,15,0.98), rgba(25,25,25,0.92)); opacity: calc({{OPACITY}} / 100); pointer-events: none }
+#{{ID}} .ldoc-content { position: relative; z-index: 1; padding: 18px 28px 14px }
+#{{ID}} .ldoc-title { font-weight: 700; font-size: {{TITLE_SIZE}}px; line-height: 1.1; color: {{TITLE_COLOR}}; letter-spacing: 0.02em; white-space: nowrap }
+#{{ID}} .ldoc-subtitle { font-size: {{SUBTITLE_SIZE}}px; color: {{SUBTITLE_COLOR}}; margin-top: 4px; opacity: 0.75; font-style: italic; white-space: nowrap }
+
+#{{ID}} .ldocw-headline { flex: 1; display: flex; align-items: center; padding: 0 24px; font-size: calc({{SUBTITLE_SIZE}}px + 2px); color: {{SUBTITLE_COLOR}}; overflow: hidden; white-space: nowrap; font-style: italic }
+
+#{{ID}} .ldocw-ticker-bar {
+  display: flex; align-items: stretch; overflow: hidden;
+  background: linear-gradient(90deg, rgba(15, 15, 15, calc({{OPACITY}} / 100)), rgba(20, 20, 20, calc({{OPACITY}} / 100)));
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+#{{ID}} .ldocw-ticker-rule {
+  width: 60px; flex-shrink: 0; display: flex; align-items: center;
+  background: linear-gradient(90deg, {{PRIMARY_COLOR}}, transparent);
+  padding: 0 8px;
+}
+
+#{{ID}} .ldocw-ticker-track { flex: 1; overflow: hidden; display: flex; align-items: center }
+#{{ID}} .ldocw-ticker-scroll { display: flex; gap: 80px; white-space: nowrap; animation: ldocw-scroll-{{ID}} 28s linear infinite; font-size: 13px; color: {{SUBTITLE_COLOR}}; opacity: 0.7; padding: 6px 0; font-style: italic }
+@keyframes ldocw-scroll-{{ID}} { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }

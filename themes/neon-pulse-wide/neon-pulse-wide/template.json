@@ -1,0 +1,19 @@
+{
+  "name": "Neon Pulse Wide",
+  "description": "Full-width bar with neon-pulse card embedded and glowing scrolling ticker.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#00ff88",
+    "SECONDARY_COLOR": "#00bfff",
+    "TITLE_COLOR": "#ffffff",
+    "SUBTITLE_COLOR": "#cccccc",
+    "OPACITY": 95,
+    "RADIUS": 6,
+    "FONT_FAMILY": "Orbitron",
+    "TITLE_SIZE": 34,
+    "SUBTITLE_SIZE": 18,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

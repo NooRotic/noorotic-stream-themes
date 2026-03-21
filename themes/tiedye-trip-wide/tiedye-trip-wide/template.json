@@ -1,0 +1,19 @@
+{
+  "name": "Tie-Dye Trip Wide",
+  "description": "Full-width psychedelic bar with rainbow scrolling ticker and swirl background.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#ff006e",
+    "SECONDARY_COLOR": "#8338ec",
+    "TITLE_COLOR": "#ffffff",
+    "SUBTITLE_COLOR": "#ffffff",
+    "OPACITY": 85,
+    "RADIUS": 0,
+    "FONT_FAMILY": "Fredoka",
+    "TITLE_SIZE": 36,
+    "SUBTITLE_SIZE": 18,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}
