@@ -1,0 +1,158 @@
+/* VinciFlow Theme: scoreboard — Live game scoreboard with ticker */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
+
+#{{ID}} .sb-card {
+  position: relative;
+  display: inline-block;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  font-family: {{FONT_FAMILY}}, 'Orbitron', system-ui, sans-serif;
+  box-shadow:
+    0 0 20px rgba(0, 255, 136, 0.2),
+    0 8px 32px rgba(0, 0, 0, 0.5);
+  min-width: 500px;
+}
+
+#{{ID}} .sb-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0a0a14, #111827);
+  opacity: calc({{OPACITY}} / 100);
+  pointer-events: none;
+}
+
+#{{ID}} .sb-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+/* Team columns */
+#{{ID}} .sb-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 28px;
+  min-width: 160px;
+}
+
+#{{ID}} .sb-team-name {
+  font-weight: 700;
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+#{{ID}} .sb-team-score {
+  font-weight: 900;
+  font-size: calc({{TITLE_SIZE}}px + 12px);
+  color: {{TITLE_COLOR}};
+  line-height: 1;
+  text-shadow: 0 0 12px {{PRIMARY_COLOR}};
+  animation: sb-score-glow-{{ID}} 2s ease-in-out infinite;
+}
+
+@keyframes sb-score-glow-{{ID}} {
+  0%, 100% { text-shadow: 0 0 8px {{PRIMARY_COLOR}}; }
+  50% { text-shadow: 0 0 20px {{PRIMARY_COLOR}}, 0 0 40px {{PRIMARY_COLOR}}; }
+}
+
+#{{ID}} .sb-team-left {
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#{{ID}} .sb-team-right {
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Center VS block */
+#{{ID}} .sb-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  gap: 2px;
+  background: linear-gradient(180deg, rgba(0, 255, 136, 0.05), transparent);
+}
+
+#{{ID}} .sb-vs {
+  font-weight: 900;
+  font-size: 16px;
+  color: {{PRIMARY_COLOR}};
+  letter-spacing: 0.15em;
+}
+
+#{{ID}} .sb-info {
+  font-size: 10px;
+  color: {{PRIMARY_COLOR}};
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  animation: sb-info-pulse-{{ID}} 1.5s ease-in-out infinite;
+}
+
+@keyframes sb-info-pulse-{{ID}} {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+#{{ID}} .sb-round {
+  font-size: 11px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+}
+
+/* Bottom ticker */
+#{{ID}} .sb-ticker-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(10, 10, 20, 0.6));
+  border-top: 1px solid rgba(0, 255, 136, 0.1);
+  overflow: hidden;
+}
+
+#{{ID}} .sb-ticker-label {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  background: {{PRIMARY_COLOR}};
+  color: #000;
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#{{ID}} .sb-ticker-track {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+#{{ID}} .sb-ticker-scroll {
+  display: flex;
+  gap: 80px;
+  white-space: nowrap;
+  animation: sb-scroll-{{ID}} 25s linear infinite;
+  font-size: 11px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.7;
+  padding: 4px 0;
+}
+
+@keyframes sb-scroll-{{ID}} {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

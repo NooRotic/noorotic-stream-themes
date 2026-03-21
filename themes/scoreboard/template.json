@@ -1,0 +1,19 @@
+{
+  "name": "Scoreboard",
+  "description": "Live game scoreboard with team scores, round info, glowing digits, and scrolling ticker.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#00ff88",
+    "SECONDARY_COLOR": "#111827",
+    "TITLE_COLOR": "#ffffff",
+    "SUBTITLE_COLOR": "#cccccc",
+    "OPACITY": 94,
+    "RADIUS": 8,
+    "FONT_FAMILY": "Orbitron",
+    "TITLE_SIZE": 42,
+    "SUBTITLE_SIZE": 16,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

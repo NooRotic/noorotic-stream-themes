@@ -1,0 +1,136 @@
+/* VinciFlow Theme: countdown — Self-contained countdown timer with progress bar */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
+
+#{{ID}} .cd-card {
+  position: relative;
+  display: inline-block;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  font-family: {{FONT_FAMILY}}, 'Orbitron', system-ui, sans-serif;
+  box-shadow:
+    0 0 20px rgba(0, 255, 136, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.5);
+  min-width: 340px;
+}
+
+#{{ID}} .cd-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #050510, #0a0a1a);
+  opacity: calc({{OPACITY}} / 100);
+  pointer-events: none;
+}
+
+#{{ID}} .cd-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid {{PRIMARY_COLOR}};
+  opacity: 0.3;
+  pointer-events: none;
+  animation: cd-border-glow-{{ID}} 3s ease-in-out infinite;
+}
+
+@keyframes cd-border-glow-{{ID}} {
+  0%, 100% { opacity: 0.2; box-shadow: inset 0 0 8px {{PRIMARY_COLOR}}; }
+  50% { opacity: 0.5; box-shadow: inset 0 0 20px {{PRIMARY_COLOR}}; }
+}
+
+#{{ID}} .cd-content {
+  position: relative;
+  z-index: 1;
+  padding: 20px 28px 16px;
+  text-align: center;
+}
+
+#{{ID}} .cd-label {
+  font-weight: 700;
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{PRIMARY_COLOR}};
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+
+/* Timer digits */
+#{{ID}} .cd-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+#{{ID}} .cd-digit-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#{{ID}} .cd-digit {
+  font-weight: 900;
+  font-size: {{TITLE_SIZE}}px;
+  color: {{TITLE_COLOR}};
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 12px {{PRIMARY_COLOR}};
+  min-width: 2.2ch;
+  text-align: center;
+}
+
+#{{ID}} .cd-unit {
+  font-size: 9px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.5;
+  letter-spacing: 0.15em;
+  margin-top: 2px;
+}
+
+#{{ID}} .cd-sep {
+  font-size: calc({{TITLE_SIZE}}px - 8px);
+  color: {{PRIMARY_COLOR}};
+  font-weight: 300;
+  opacity: 0.6;
+  animation: cd-blink-{{ID}} 1s step-end infinite;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+@keyframes cd-blink-{{ID}} {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0; }
+}
+
+#{{ID}} .cd-subtitle {
+  font-size: 12px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.6;
+  margin-top: 8px;
+  letter-spacing: 0.04em;
+}
+
+/* Timer done state */
+#{{ID}} .cd-timer.cd-done .cd-digit {
+  color: {{PRIMARY_COLOR}};
+  animation: cd-flash-{{ID}} 0.5s ease-in-out infinite;
+}
+
+@keyframes cd-flash-{{ID}} {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Progress bar */
+#{{ID}} .cd-progress-track {
+  position: relative;
+  z-index: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+#{{ID}} .cd-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, {{PRIMARY_COLOR}}, {{SECONDARY_COLOR}});
+  transition: width 0.3s linear;
+  box-shadow: 0 0 8px {{PRIMARY_COLOR}};
+}

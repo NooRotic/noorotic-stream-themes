@@ -1,0 +1,19 @@
+{
+  "name": "Countdown Timer",
+  "description": "Self-contained countdown with glowing digits, blinking colons, and progress bar. Set target via parameters JSON.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#00ff88",
+    "SECONDARY_COLOR": "#00bfff",
+    "TITLE_COLOR": "#ffffff",
+    "SUBTITLE_COLOR": "#cccccc",
+    "OPACITY": 94,
+    "RADIUS": 8,
+    "FONT_FAMILY": "Orbitron",
+    "TITLE_SIZE": 48,
+    "SUBTITLE_SIZE": 14,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}
