@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>VinciFlow Theme Viewer</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Montserrat:wght@600;800;900&family=Orbitron:wght@500;700;900&family=Fredoka:wght@500;700&family=Righteous&display=swap"/>
+<style>
+/* ═══════════ Viewer UI Styles ═══════════ */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --sidebar-w:320px;
+  --ui-bg:#111;
+  --ui-surface:#1a1a1a;
+  --ui-border:#333;
+  --ui-text:#e0e0e0;
+  --ui-muted:#888;
+  --ui-accent:#00ff88;
+}
+html,body{margin:0;padding:0;height:100%;background:var(--ui-bg);color:var(--ui-text);font-family:'Inter',system-ui,sans-serif;font-size:14px}
+#app{display:flex;height:100vh;overflow:hidden}
+
+/* Sidebar */
+#sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--ui-surface);border-right:1px solid var(--ui-border);
+  overflow-y:auto;overflow-x:hidden;padding:0;
+  display:flex;flex-direction:column;
+}
+#sidebar::-webkit-scrollbar{width:6px}
+#sidebar::-webkit-scrollbar-thumb{background:#444;border-radius:3px}
+.sb-header{
+  padding:16px 16px 12px;border-bottom:1px solid var(--ui-border);
+  position:sticky;top:0;background:var(--ui-surface);z-index:10;
+}
+.sb-header h1{margin:0;font-size:16px;font-weight:700;color:var(--ui-accent);letter-spacing:0.04em}
+.sb-header p{margin:4px 0 0;font-size:11px;color:var(--ui-muted)}
+.sb-section{padding:12px 16px;border-bottom:1px solid var(--ui-border)}
+.sb-section h3{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ui-muted);font-weight:600}
+.sb-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sb-row:last-child{margin-bottom:0}
+.sb-row label{font-size:12px;min-width:70px;color:var(--ui-text);flex-shrink:0}
+.sb-row input[type="text"],.sb-row input[type="url"]{
+  flex:1;background:#111;border:1px solid var(--ui-border);border-radius:4px;
+  padding:5px 8px;color:var(--ui-text);font-size:12px;font-family:inherit;
+}
+.sb-row input[type="text"]:focus,.sb-row input[type="url"]:focus{border-color:var(--ui-accent);outline:none}
+.sb-row input[type="color"]{
+  width:32px;height:26px;border:1px solid var(--ui-border);border-radius:4px;
+  background:transparent;cursor:pointer;padding:1px;
+}
+.sb-row input[type="range"]{flex:1;accent-color:var(--ui-accent)}
+.sb-row .val{font-size:11px;color:var(--ui-muted);min-width:30px;text-align:right}
+.sb-row select{
+  flex:1;background:#111;border:1px solid var(--ui-border);border-radius:4px;
+  padding:5px 6px;color:var(--ui-text);font-size:12px;font-family:inherit;
+}
+
+/* Theme selector */
+.theme-list{display:flex;flex-direction:column;gap:2px}
+.theme-item{
+  display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:4px;
+  cursor:pointer;transition:background 0.15s;font-size:12px;
+}
+.theme-item:hover{background:rgba(255,255,255,0.05)}
+.theme-item.active{background:rgba(0,255,136,0.12);color:var(--ui-accent)}
+.theme-item input[type="checkbox"]{accent-color:var(--ui-accent);margin:0}
+.theme-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.theme-desc{font-size:10px;color:var(--ui-muted);margin-left:auto;max-width:120px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Buttons */
+.btn{
+  padding:6px 12px;border:1px solid var(--ui-border);border-radius:4px;
+  background:var(--ui-surface);color:var(--ui-text);font-size:11px;
+  cursor:pointer;transition:all 0.15s;font-family:inherit;white-space:nowrap;
+}
+.btn:hover{border-color:var(--ui-accent);color:var(--ui-accent)}
+.btn.active{background:var(--ui-accent);color:#000;border-color:var(--ui-accent)}
+.btn-row{display:flex;gap:6px;flex-wrap:wrap}
+.btn-sm{padding:4px 8px;font-size:10px}
+
+/* View mode */
+.view-toggle{display:flex;gap:0}
+.view-toggle .btn{border-radius:0}
+.view-toggle .btn:first-child{border-radius:4px 0 0 4px}
+.view-toggle .btn:last-child{border-radius:0 4px 4px 0}
+
+/* Canvas */
+#canvas{
+  flex:1;overflow:auto;position:relative;
+  background:
+    linear-gradient(45deg, #141414 25%, transparent 25%),
+    linear-gradient(-45deg, #141414 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #141414 75%),
+    linear-gradient(-45deg, transparent 75%, #141414 75%);
+  background-size:20px 20px;
+  background-position:0 0, 0 10px, 10px -10px, -10px 0;
+  background-color:#181818;
+}
+#canvas.single-mode{display:flex;align-items:center;justify-content:center;padding:40px}
+#canvas.compare-mode{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));
+  gap:24px;padding:24px;align-content:start;
+}
+
+/* Preview slot */
+.preview-slot{position:relative}
+.preview-slot .slot-label{
+  font-size:11px;color:var(--ui-muted);margin-bottom:8px;
+  text-transform:uppercase;letter-spacing:0.08em;
+}
+.preview-slot .slot-render{position:relative;min-height:60px}
+.preview-slot.slot-active .slot-label{color:var(--ui-accent)}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:20px;right:20px;background:var(--ui-accent);color:#000;
+  padding:8px 16px;border-radius:6px;font-size:12px;font-weight:600;
+  opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:999;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="sb-header">
+      <h1>VINCIFLOW VIEWER</h1>
+      <p>Theme preview &amp; comparison tool</p>
+    </div>
+
+    <!-- View Mode -->
+    <div class="sb-section">
+      <h3>View Mode</h3>
+      <div class="view-toggle">
+        <button class="btn active" data-view="single">Single</button>
+        <button class="btn" data-view="compare">Compare</button>
+      </div>
+    </div>
+
+    <!-- Theme Selector -->
+    <div class="sb-section" id="theme-selector">
+      <h3>Themes</h3>
+      <div class="theme-list" id="theme-list"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="sb-section">
+      <h3>Content</h3>
+      <div class="sb-row"><label>Title</label><input type="text" data-param="TITLE" value="Sample Title"/></div>
+      <div class="sb-row"><label>Subtitle</label><input type="text" data-param="SUBTITLE" value="Subtitle text here"/></div>
+      <div class="sb-row" id="avatar-row" style="display:none"><label>Avatar URL</label><input type="url" data-param="PROFILE_PICTURE_URL" value=""/></div>
+      <div class="sb-row" id="headlines-row" style="display:none"><label>Headlines</label><input type="text" data-param="HEADLINES" value="Breaking News|Live Update|Just In" placeholder="Pipe-separated"/></div>
+    </div>
+
+    <!-- Colors -->
+    <div class="sb-section">
+      <h3>Colors</h3>
+      <div class="sb-row"><label>Primary</label><input type="color" data-param="PRIMARY_COLOR" value="#00ff88"/><input type="text" data-param="PRIMARY_COLOR_TEXT" value="#00ff88" style="width:72px;flex:none"/></div>
+      <div class="sb-row"><label>Secondary</label><input type="color" data-param="SECONDARY_COLOR" value="#0a0a0a"/><input type="text" data-param="SECONDARY_COLOR_TEXT" value="#0a0a0a" style="width:72px;flex:none"/></div>
+      <div class="sb-row"><label>Title</label><input type="color" data-param="TITLE_COLOR" value="#ffffff"/><input type="text" data-param="TITLE_COLOR_TEXT" value="#ffffff" style="width:72px;flex:none"/></div>
+      <div class="sb-row"><label>Subtitle</label><input type="color" data-param="SUBTITLE_COLOR" value="#cccccc"/><input type="text" data-param="SUBTITLE_COLOR_TEXT" value="#cccccc" style="width:72px;flex:none"/></div>
+    </div>
+
+    <!-- Layout -->
+    <div class="sb-section">
+      <h3>Layout</h3>
+      <div class="sb-row"><label>Opacity</label><input type="range" data-param="OPACITY" min="0" max="100" value="92"/><span class="val" id="val-OPACITY">92</span></div>
+      <div class="sb-row"><label>Radius</label><input type="range" data-param="RADIUS" min="0" max="30" value="0"/><span class="val" id="val-RADIUS">0</span></div>
+      <div class="sb-row"><label>Title Size</label><input type="range" data-param="TITLE_SIZE" min="16" max="60" value="36"/><span class="val" id="val-TITLE_SIZE">36</span></div>
+      <div class="sb-row"><label>Sub Size</label><input type="range" data-param="SUBTITLE_SIZE" min="12" max="40" value="20"/><span class="val" id="val-SUBTITLE_SIZE">20</span></div>
+    </div>
+
+    <!-- Animation -->
+    <div class="sb-section">
+      <h3>Animation</h3>
+      <div class="sb-row">
+        <label>Entrance</label>
+        <select id="anim-in">
+          <option value="animate__fadeInUp">fadeInUp</option>
+          <option value="animate__fadeInLeft">fadeInLeft</option>
+          <option value="animate__fadeInRight">fadeInRight</option>
+          <option value="animate__fadeInDown">fadeInDown</option>
+          <option value="animate__fadeIn">fadeIn</option>
+          <option value="animate__zoomIn">zoomIn</option>
+          <option value="animate__slideInLeft">slideInLeft</option>
+          <option value="animate__slideInUp">slideInUp</option>
+          <option value="animate__bounceIn">bounceIn</option>
+          <option value="animate__flipInX">flipInX</option>
+        </select>
+      </div>
+      <div class="sb-row">
+        <label>Exit</label>
+        <select id="anim-out">
+          <option value="animate__fadeOutDown">fadeOutDown</option>
+          <option value="animate__fadeOutLeft">fadeOutLeft</option>
+          <option value="animate__fadeOutRight">fadeOutRight</option>
+          <option value="animate__fadeOutUp">fadeOutUp</option>
+          <option value="animate__fadeOut">fadeOut</option>
+          <option value="animate__zoomOut">zoomOut</option>
+          <option value="animate__slideOutLeft">slideOutLeft</option>
+          <option value="animate__slideOutDown">slideOutDown</option>
+          <option value="animate__bounceOut">bounceOut</option>
+          <option value="animate__flipOutX">flipOutX</option>
+        </select>
+      </div>
+      <div class="btn-row" style="margin-top:4px">
+        <button class="btn" id="btn-play-in">Play In</button>
+        <button class="btn" id="btn-play-out">Play Out</button>
+        <button class="btn" id="btn-play-both">Play Both</button>
+        <button class="btn" id="btn-pause-anims">Pause CSS</button>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="sb-section">
+      <h3>Actions</h3>
+      <div class="btn-row">
+        <button class="btn" id="btn-reset">Reset Defaults</button>
+        <button class="btn" id="btn-copy-css">Copy CSS</button>
+        <button class="btn" id="btn-copy-html">Copy HTML</button>
+      </div>
+    </div>
+  </aside>
+
+  <main id="canvas" class="single-mode"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════ Embedded Theme Data ═══════════ */
+const THEMES = {
+"network-bar": {
+  name: "Network Bar",
+  description: "CNN/Fox-style bottom bar, cyberpunk matrix",
+  color: "#00ff88",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#00ff88",SECONDARY_COLOR:"#0a0a0a",TITLE_COLOR:"#f9fafb",SUBTITLE_COLOR:"#cccccc",OPACITY:92,RADIUS:0,FONT_FAMILY:"Orbitron",TITLE_SIZE:36,SUBTITLE_SIZE:20,AVATAR_WIDTH:80,AVATAR_HEIGHT:80,ANIM_IN:"animate__fadeInLeft",ANIM_OUT:"animate__fadeOutLeft" },
+  html: `<div class="nbar-card" data-slt-root>\n  <div class="nbar-accent" aria-hidden="true"></div>\n  <div class="nbar-content">\n    <div class="nbar-title" data-title>{{TITLE}}</div>\n    <span class="nbar-sep" aria-hidden="true">|</span>\n    <div class="nbar-subtitle" data-subtitle>{{SUBTITLE}}</div>\n  </div>\n</div>`,
+  css: `#{{ID}} .nbar-card{position:relative;display:inline-flex;align-items:stretch;font-family:{{FONT_FAMILY}},'Orbitron','Segoe UI',system-ui,sans-serif;border-radius:{{RADIUS}}px;overflow:hidden;box-shadow:0 0 16px rgba(0,255,136,0.25),0 4px 12px rgba(0,0,0,0.6)}
+#{{ID}} .nbar-accent{width:6px;flex-shrink:0;background:{{PRIMARY_COLOR}};box-shadow:0 0 12px {{PRIMARY_COLOR}}}
+#{{ID}} .nbar-content{display:flex;align-items:center;gap:14px;padding:12px 24px;background:linear-gradient(135deg,rgba(10,10,10,calc({{OPACITY}}/100)),rgba(26,26,26,calc({{OPACITY}}/100)));backdrop-filter:blur(6px)}
+#{{ID}} .nbar-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.1;color:{{TITLE_COLOR}};text-transform:uppercase;letter-spacing:0.08em;text-shadow:0 0 8px {{PRIMARY_COLOR}},0 0 2px #fff}
+#{{ID}} .nbar-sep{color:{{PRIMARY_COLOR}};font-size:{{TITLE_SIZE}}px;opacity:0.5;font-weight:300}
+#{{ID}} .nbar-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};opacity:0.9;letter-spacing:0.04em}`
+},
+"anchor-card": {
+  name: "Anchor Card",
+  description: "Avatar circle, dark bg, left stripe",
+  color: "#3b82f6",
+  hasAvatar: true,
+  defaults: { PRIMARY_COLOR:"#3b82f6",SECONDARY_COLOR:"#111827",TITLE_COLOR:"#f9fafb",SUBTITLE_COLOR:"#d1d5db",OPACITY:90,RADIUS:8,FONT_FAMILY:"Segoe UI",TITLE_SIZE:40,SUBTITLE_SIZE:22,AVATAR_WIDTH:80,AVATAR_HEIGHT:80,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="anchor-card" data-slt-root>\n  <div class="anchor-bg" aria-hidden="true"></div>\n  <div class="anchor-stripe" aria-hidden="true"></div>\n  <div class="anchor-content">\n    <img class="anchor-avatar" src="{{PROFILE_PICTURE_URL}}" alt="" onerror="this.style.display='none'"/>\n    <div class="anchor-text">\n      <div class="anchor-title" data-title>{{TITLE}}</div>\n      <div class="anchor-subtitle" data-subtitle>{{SUBTITLE}}</div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .anchor-card{position:relative;display:inline-block;border-radius:{{RADIUS}}px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,0.45);font-family:{{FONT_FAMILY}},'Segoe UI',system-ui,sans-serif}
+#{{ID}} .anchor-bg{position:absolute;inset:0;background:linear-gradient(135deg,#111827,#1f2937);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .anchor-stripe{position:absolute;left:0;top:0;bottom:0;width:5px;background:{{PRIMARY_COLOR}}}
+#{{ID}} .anchor-content{position:relative;z-index:1;display:flex;align-items:center;gap:16px;padding:16px 22px 16px 20px}
+#{{ID}} .anchor-avatar{width:{{AVATAR_WIDTH}}px;height:{{AVATAR_HEIGHT}}px;border-radius:50%;object-fit:cover;border:3px solid {{PRIMARY_COLOR}};flex-shrink:0;background:rgba(255,255,255,0.06)}
+#{{ID}} .anchor-avatar:not([src]),#{{ID}} .anchor-avatar[src=""],#{{ID}} .anchor-avatar[src="./"]{display:none!important}
+#{{ID}} .anchor-text{display:flex;flex-direction:column;gap:3px}
+#{{ID}} .anchor-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:{{TITLE_COLOR}}}
+#{{ID}} .anchor-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};opacity:0.85}`
+},
+"corporate-clean": {
+  name: "Corporate Clean",
+  description: "Light card, shadow, accent gradient",
+  color: "#2563eb",
+  hasAvatar: true,
+  defaults: { PRIMARY_COLOR:"#2563eb",SECONDARY_COLOR:"#7c3aed",TITLE_COLOR:"#111827",SUBTITLE_COLOR:"#6b7280",OPACITY:96,RADIUS:10,FONT_FAMILY:"Segoe UI",TITLE_SIZE:38,SUBTITLE_SIZE:20,AVATAR_WIDTH:64,AVATAR_HEIGHT:64,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="corp-card" data-slt-root>\n  <div class="corp-bg" aria-hidden="true"></div>\n  <div class="corp-accent-line" aria-hidden="true"></div>\n  <div class="corp-content">\n    <img class="corp-avatar" src="{{PROFILE_PICTURE_URL}}" alt="" onerror="this.style.display='none'"/>\n    <div class="corp-text">\n      <div class="corp-title" data-title>{{TITLE}}</div>\n      <div class="corp-subtitle" data-subtitle>{{SUBTITLE}}</div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .corp-card{position:relative;display:inline-block;border-radius:{{RADIUS}}px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.08);font-family:{{FONT_FAMILY}},'Segoe UI',system-ui,sans-serif}
+#{{ID}} .corp-bg{position:absolute;inset:0;background:#ffffff;opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .corp-accent-line{position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,{{PRIMARY_COLOR}},{{SECONDARY_COLOR}})}
+#{{ID}} .corp-content{position:relative;z-index:1;display:flex;align-items:center;gap:14px;padding:18px 24px}
+#{{ID}} .corp-avatar{width:{{AVATAR_WIDTH}}px;height:{{AVATAR_HEIGHT}}px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#f3f4f6}
+#{{ID}} .corp-avatar:not([src]),#{{ID}} .corp-avatar[src=""],#{{ID}} .corp-avatar[src="./"]{display:none!important}
+#{{ID}} .corp-text{display:flex;flex-direction:column;gap:2px}
+#{{ID}} .corp-title{font-weight:600;font-size:{{TITLE_SIZE}}px;line-height:1.2;color:{{TITLE_COLOR}}}
+#{{ID}} .corp-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}}}`
+},
+"breaking-news": {
+  name: "Breaking News",
+  description: "Red BREAKING badge, high contrast",
+  color: "#dc2626",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#dc2626",SECONDARY_COLOR:"#1a1a1a",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#d1d5db",OPACITY:94,RADIUS:0,FONT_FAMILY:"Segoe UI",TITLE_SIZE:38,SUBTITLE_SIZE:20,AVATAR_WIDTH:80,AVATAR_HEIGHT:80,ANIM_IN:"animate__fadeInLeft",ANIM_OUT:"animate__fadeOutLeft" },
+  html: `<div class="brk-card" data-slt-root>\n  <div class="brk-bg" aria-hidden="true"></div>\n  <div class="brk-content">\n    <div class="brk-badge">BREAKING</div>\n    <div class="brk-text">\n      <div class="brk-title" data-title>{{TITLE}}</div>\n      <div class="brk-subtitle" data-subtitle>{{SUBTITLE}}</div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .brk-card{position:relative;display:inline-flex;align-items:stretch;border-radius:{{RADIUS}}px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.5);font-family:{{FONT_FAMILY}},'Segoe UI',system-ui,sans-serif}
+#{{ID}} .brk-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1a1a1a,#0d0d0d);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .brk-content{position:relative;z-index:1;display:flex;align-items:stretch}
+#{{ID}} .brk-badge{display:flex;align-items:center;padding:12px 18px;background:{{PRIMARY_COLOR}};color:#fff;font-weight:900;font-size:18px;letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap;animation:brk-pulse-{{ID}} 2s ease-in-out infinite}
+@keyframes brk-pulse-{{ID}}{0%,100%{opacity:1}50%{opacity:0.8}}
+#{{ID}} .brk-text{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:12px 22px}
+#{{ID}} .brk-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:{{TITLE_COLOR}}}
+#{{ID}} .brk-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};opacity:0.85}`
+},
+"lower-doc": {
+  name: "Lower Documentary",
+  description: "Dark cinematic bar, serif, fade rule",
+  color: "#d4a574",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#d4a574",SECONDARY_COLOR:"#0f0f0f",TITLE_COLOR:"#f5f5f4",SUBTITLE_COLOR:"#a8a29e",OPACITY:95,RADIUS:0,FONT_FAMILY:"Georgia",TITLE_SIZE:44,SUBTITLE_SIZE:22,AVATAR_WIDTH:80,AVATAR_HEIGHT:80,ANIM_IN:"animate__fadeIn",ANIM_OUT:"animate__fadeOut" },
+  html: `<div class="ldoc-card" data-slt-root>\n  <div class="ldoc-bg" aria-hidden="true"></div>\n  <div class="ldoc-content">\n    <div class="ldoc-title" data-title>{{TITLE}}</div>\n    <div class="ldoc-subtitle" data-subtitle>{{SUBTITLE}}</div>\n  </div>\n  <div class="ldoc-rule" aria-hidden="true"></div>\n</div>`,
+  css: `#{{ID}} .ldoc-card{position:relative;display:inline-block;font-family:{{FONT_FAMILY}},Georgia,'Times New Roman',serif;border-radius:{{RADIUS}}px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.4);min-width:320px}
+#{{ID}} .ldoc-bg{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,15,15,0.98),rgba(25,25,25,0.92));opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .ldoc-content{position:relative;z-index:1;padding:20px 28px 16px}
+#{{ID}} .ldoc-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.1;color:{{TITLE_COLOR}};letter-spacing:0.02em}
+#{{ID}} .ldoc-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};margin-top:4px;opacity:0.75;font-style:italic}
+#{{ID}} .ldoc-rule{height:3px;background:linear-gradient(90deg,{{PRIMARY_COLOR}},transparent)}`
+},
+"breaking-bowltv": {
+  name: "Breaking — BowlTV",
+  description: "BowlTV branded, logo, cyan accent",
+  color: "#51BFE2",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#51BFE2",SECONDARY_COLOR:"#368096",TITLE_COLOR:"#FFF2F2",SUBTITLE_COLOR:"#CCC2C2",OPACITY:95,RADIUS:4,FONT_FAMILY:"Montserrat",TITLE_SIZE:34,SUBTITLE_SIZE:18,AVATAR_WIDTH:80,AVATAR_HEIGHT:80,ANIM_IN:"animate__fadeInLeft",ANIM_OUT:"animate__fadeOutLeft" },
+  html: `<div class="btv-card" data-slt-root>\n  <div class="btv-bg" aria-hidden="true"></div>\n  <div class="btv-content">\n    <div class="btv-badge-wrap">\n      <img class="btv-logo" src="https://static.maestro.io/media/5c09513f58dfae005af67a20/609565fe6e4c5d00a50a0736.png" alt="BowlTV"/>\n      <div class="btv-badge">BREAKING</div>\n    </div>\n    <div class="btv-divider" aria-hidden="true"></div>\n    <div class="btv-text">\n      <div class="btv-title" data-title>{{TITLE}}</div>\n      <div class="btv-subtitle" data-subtitle>{{SUBTITLE}}</div>\n    </div>\n  </div>\n  <div class="btv-accent-bar" aria-hidden="true"></div>\n</div>`,
+  css: `#{{ID}} .btv-card{position:relative;display:inline-flex;flex-direction:column;border-radius:{{RADIUS}}px;overflow:hidden;box-shadow:0 0 24px rgba(81,191,226,0.3),0 8px 32px rgba(0,0,0,0.6);font-family:{{FONT_FAMILY}},'Montserrat','Proxima Nova',system-ui,sans-serif}
+#{{ID}} .btv-bg{position:absolute;inset:0;background:linear-gradient(135deg,#000,#1a1a1a);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .btv-content{position:relative;z-index:1;display:flex;align-items:center}
+#{{ID}} .btv-badge-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px 18px;background:linear-gradient(180deg,rgba(81,191,226,0.15),rgba(81,191,226,0.05));border-right:1px solid rgba(81,191,226,0.2)}
+#{{ID}} .btv-logo{height:28px;width:auto;object-fit:contain;filter:brightness(1.1)}
+#{{ID}} .btv-badge{display:inline-block;padding:3px 12px;background:#FF0000;color:#fff;font-weight:900;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;border-radius:2px;animation:btv-pulse-{{ID}} 2s ease-in-out infinite}
+@keyframes btv-pulse-{{ID}}{0%,100%{opacity:1;box-shadow:0 0 8px rgba(255,0,0,0.5)}50%{opacity:0.85;box-shadow:0 0 16px rgba(255,0,0,0.8)}}
+#{{ID}} .btv-divider{width:3px;align-self:stretch;background:linear-gradient(180deg,transparent,#51BFE2,transparent)}
+#{{ID}} .btv-text{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:14px 24px}
+#{{ID}} .btv-title{font-weight:800;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:#FFF2F2;text-transform:uppercase;letter-spacing:0.03em}
+#{{ID}} .btv-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:#CCC2C2;opacity:0.9;letter-spacing:0.02em}
+#{{ID}} .btv-accent-bar{height:3px;background:linear-gradient(90deg,#51BFE2,#368096,transparent);position:relative;z-index:1}`
+},
+"neon-pulse": {
+  name: "Neon Pulse",
+  description: "Glowing border, breathing shadows, flicker",
+  color: "#00ff88",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#00ff88",SECONDARY_COLOR:"#00bfff",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#cccccc",OPACITY:95,RADIUS:6,FONT_FAMILY:"Orbitron",TITLE_SIZE:38,SUBTITLE_SIZE:20,AVATAR_WIDTH:80,AVATAR_HEIGHT:80,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="neon-card" data-slt-root>\n  <div class="neon-bg" aria-hidden="true"></div>\n  <div class="neon-glow-border" aria-hidden="true"></div>\n  <div class="neon-content">\n    <div class="neon-title" data-title>{{TITLE}}</div>\n    <div class="neon-subtitle" data-subtitle>{{SUBTITLE}}</div>\n  </div>\n</div>`,
+  css: `#{{ID}} .neon-card{position:relative;display:inline-block;border-radius:{{RADIUS}}px;overflow:visible;font-family:{{FONT_FAMILY}},'Orbitron',system-ui,sans-serif;animation:neon-breathe-{{ID}} 3s ease-in-out infinite}
+@keyframes neon-breathe-{{ID}}{0%,100%{filter:drop-shadow(0 0 8px {{PRIMARY_COLOR}}) drop-shadow(0 0 20px {{PRIMARY_COLOR}})}50%{filter:drop-shadow(0 0 16px {{PRIMARY_COLOR}}) drop-shadow(0 0 40px {{PRIMARY_COLOR}}) drop-shadow(0 0 60px {{PRIMARY_COLOR}})}}
+#{{ID}} .neon-bg{position:absolute;inset:0;background:linear-gradient(135deg,#050510,#0a0a1a);opacity:calc({{OPACITY}}/100);border-radius:inherit;pointer-events:none}
+#{{ID}} .neon-glow-border{position:absolute;inset:-2px;border-radius:inherit;background:linear-gradient(var(--neon-angle-{{ID}},0deg),{{PRIMARY_COLOR}},{{SECONDARY_COLOR}},#ff00ff,{{PRIMARY_COLOR}});z-index:0;animation:neon-border-spin-{{ID}} 4s linear infinite}
+@keyframes neon-border-spin-{{ID}}{0%{--neon-angle-{{ID}}:0deg}100%{--neon-angle-{{ID}}:360deg}}
+#{{ID}} .neon-glow-border::before{content:'';position:absolute;inset:2px;background:linear-gradient(135deg,#050510,#0a0a1a);border-radius:inherit;z-index:1}
+#{{ID}} .neon-content{position:relative;z-index:2;padding:16px 28px;display:flex;flex-direction:column;gap:4px}
+#{{ID}} .neon-title{font-weight:900;font-size:{{TITLE_SIZE}}px;line-height:1.1;color:#fff;text-transform:uppercase;letter-spacing:0.1em;text-shadow:0 0 7px {{PRIMARY_COLOR}},0 0 20px {{PRIMARY_COLOR}},0 0 42px {{PRIMARY_COLOR}};animation:neon-text-flicker-{{ID}} 5s ease-in-out infinite}
+@keyframes neon-text-flicker-{{ID}}{0%,19%,21%,23%,25%,54%,56%,100%{text-shadow:0 0 7px {{PRIMARY_COLOR}},0 0 20px {{PRIMARY_COLOR}},0 0 42px {{PRIMARY_COLOR}};opacity:1}20%,24%,55%{text-shadow:none;opacity:0.85}}
+#{{ID}} .neon-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};letter-spacing:0.06em;opacity:0.8}`
+},
+"tiedye-trip": {
+  name: "Tie-Dye Trip",
+  description: "Psychedelic swirl, rainbow text, hue cycling",
+  color: "#ff006e",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#ff006e",SECONDARY_COLOR:"#8338ec",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#ffffff",OPACITY:85,RADIUS:10,FONT_FAMILY:"Fredoka",TITLE_SIZE:40,SUBTITLE_SIZE:20,AVATAR_WIDTH:80,AVATAR_HEIGHT:80,ANIM_IN:"animate__zoomIn",ANIM_OUT:"animate__zoomOut" },
+  html: `<div class="dye-card" data-slt-root>\n  <div class="dye-swirl" aria-hidden="true"></div>\n  <div class="dye-glass" aria-hidden="true"></div>\n  <div class="dye-content">\n    <div class="dye-title" data-title>{{TITLE}}</div>\n    <div class="dye-subtitle" data-subtitle>{{SUBTITLE}}</div>\n  </div>\n</div>`,
+  css: `#{{ID}} .dye-card{position:relative;display:inline-block;border-radius:{{RADIUS}}px;overflow:hidden;font-family:{{FONT_FAMILY}},'Fredoka','Righteous',system-ui,sans-serif;animation:dye-hue-rotate-{{ID}} 8s linear infinite}
+@keyframes dye-hue-rotate-{{ID}}{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+#{{ID}} .dye-swirl{position:absolute;inset:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,#ff006e 0%,transparent 50%),radial-gradient(circle at 70% 30%,#ffbe0b 0%,transparent 50%),radial-gradient(circle at 50% 80%,#8338ec 0%,transparent 50%),radial-gradient(circle at 20% 70%,#3a86ff 0%,transparent 50%),radial-gradient(circle at 80% 60%,#ff006e 0%,transparent 50%),radial-gradient(circle at 60% 20%,#06d6a0 0%,transparent 40%),linear-gradient(135deg,#fb5607,#ff006e,#8338ec,#3a86ff,#06d6a0,#ffbe0b);opacity:calc({{OPACITY}}/100);animation:dye-swirl-move-{{ID}} 12s ease-in-out infinite alternate;pointer-events:none}
+@keyframes dye-swirl-move-{{ID}}{0%{transform:translate(0,0) rotate(0deg) scale(1)}33%{transform:translate(-10%,5%) rotate(120deg) scale(1.1)}66%{transform:translate(5%,-10%) rotate(240deg) scale(0.95)}100%{transform:translate(-5%,8%) rotate(360deg) scale(1.05)}}
+#{{ID}} .dye-glass{position:absolute;inset:0;background:rgba(0,0,0,0.35);backdrop-filter:blur(2px);pointer-events:none}
+#{{ID}} .dye-content{position:relative;z-index:2;padding:18px 28px;display:flex;flex-direction:column;gap:4px}
+#{{ID}} .dye-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:#fff;text-transform:uppercase;letter-spacing:0.06em;text-shadow:2px 2px 0 rgba(0,0,0,0.5),0 0 20px rgba(255,255,255,0.3);background:linear-gradient(90deg,#ff006e,#ffbe0b,#06d6a0,#3a86ff,#8338ec,#ff006e);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:dye-text-shift-{{ID}} 4s linear infinite}
+@keyframes dye-text-shift-{{ID}}{0%{background-position:0% center}100%{background-position:200% center}}
+#{{ID}} .dye-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:#fff;opacity:0.9;text-shadow:1px 1px 0 rgba(0,0,0,0.5);letter-spacing:0.04em}
+#{{ID}} .dye-card::after{content:'';position:absolute;inset:0;border-radius:inherit;border:2px solid transparent;background:linear-gradient(90deg,#ff006e,#ffbe0b,#06d6a0,#3a86ff,#8338ec,#ff006e) border-box;background-size:300% auto;-webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:dye-border-flow-{{ID}} 3s linear infinite;pointer-events:none;z-index:3}
+@keyframes dye-border-flow-{{ID}}{0%{background-position:0% center}100%{background-position:300% center}}`
+},
+"headline-ticker": {
+  name: "Headline Ticker",
+  description: "Auto-cycling headlines, orbiting glow, LIVE",
+  color: "#00ff88",
+  hasAvatar: false,
+  hasHeadlines: true,
+  defaults: { PRIMARY_COLOR:"#00ff88",SECONDARY_COLOR:"#0a0a14",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#aaaaaa",OPACITY:94,RADIUS:6,FONT_FAMILY:"Inter",TITLE_SIZE:32,SUBTITLE_SIZE:18,AVATAR_WIDTH:80,AVATAR_HEIGHT:80,ANIM_IN:"animate__fadeInLeft",ANIM_OUT:"animate__fadeOutRight" },
+  html: `<div class="htk-card" data-slt-root>\n  <div class="htk-bg" aria-hidden="true"></div>\n  <div class="htk-glow-edge" aria-hidden="true"></div>\n  <div class="htk-content">\n    <div class="htk-label">LIVE</div>\n    <div class="htk-text-wrap">\n      <div class="htk-title" data-title>{{TITLE}}</div>\n      <div class="htk-subtitle" data-subtitle>{{SUBTITLE}}</div>\n    </div>\n  </div>\n</div>\n<span data-headlines style="display:none">{{HEADLINES}}</span>`,
+  script: `(function(id){var root=document.getElementById(id);if(!root)return;var titleEl=root.querySelector('.htk-title');if(!titleEl)return;var idx=0;function getHL(){var el=root.parentElement&&root.parentElement.querySelector('[data-headlines]');if(el&&el.textContent.trim())return el.textContent.split('|').map(function(s){return s.trim()}).filter(Boolean);return[]}function cycle(){var h=getHL();if(h.length<2)return;idx=(idx+1)%h.length;titleEl.style.transition='opacity 0.4s ease,transform 0.4s ease';titleEl.style.opacity='0';titleEl.style.transform='translateY(-12px)';setTimeout(function(){titleEl.textContent=h[idx];titleEl.style.transform='translateY(12px)';void titleEl.offsetWidth;titleEl.style.opacity='1';titleEl.style.transform='translateY(0)'},420)}setInterval(cycle,5000)})('{ID}');`,
+  css: `#{{ID}} .htk-card{position:relative;display:inline-flex;align-items:stretch;border-radius:{{RADIUS}}px;overflow:hidden;font-family:{{FONT_FAMILY}},'Inter',system-ui,sans-serif;box-shadow:0 0 12px rgba(81,191,226,0.2),0 6px 24px rgba(0,0,0,0.5)}
+#{{ID}} .htk-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a14,#12121f);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .htk-glow-edge{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;z-index:0}
+#{{ID}} .htk-glow-edge::before{content:'';position:absolute;width:120px;height:120px;background:radial-gradient(circle,{{PRIMARY_COLOR}} 0%,transparent 70%);opacity:0.7;animation:htk-orbit-{{ID}} 4s linear infinite}
+@keyframes htk-orbit-{{ID}}{0%{top:-60px;left:-60px}25%{top:-60px;left:calc(100% - 60px)}50%{top:calc(100% - 60px);left:calc(100% - 60px)}75%{top:calc(100% - 60px);left:-60px}100%{top:-60px;left:-60px}}
+#{{ID}} .htk-card::after{content:'';position:absolute;inset:0;border:1px solid rgba(255,255,255,0.1);border-radius:inherit;pointer-events:none;z-index:4}
+#{{ID}} .htk-content{position:relative;z-index:2;display:flex;align-items:center}
+#{{ID}} .htk-label{display:flex;align-items:center;gap:6px;padding:14px 16px;background:{{PRIMARY_COLOR}};color:#000;font-weight:900;font-size:14px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap}
+#{{ID}} .htk-label::before{content:'';width:8px;height:8px;border-radius:50%;background:#fff;animation:htk-dot-pulse-{{ID}} 1.5s ease-in-out infinite}
+@keyframes htk-dot-pulse-{{ID}}{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+#{{ID}} .htk-text-wrap{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:12px 24px;min-width:280px}
+#{{ID}} .htk-title{font-weight:900;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:{{TITLE_COLOR}};text-transform:uppercase;letter-spacing:0.03em;white-space:nowrap}
+#{{ID}} .htk-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};opacity:0.8}`
+}
+};
+
+/* ═══════════ Template Engine ═══════════ */
+let instanceCounter = 0;
+
+function substitute(str, vars) {
+  for (const [k, v] of Object.entries(vars)) {
+    str = str.replace(new RegExp('\\{\\{' + k + '\\}\\}', 'g'), v);
+  }
+  return str;
+}
+
+function renderTemplate(slug, overrides) {
+  const theme = THEMES[slug];
+  const id = 'vf-' + slug + '-' + (++instanceCounter);
+  const vars = { ...theme.defaults, ...overrides, ID: id };
+  if (!vars.TITLE) vars.TITLE = 'Sample Title';
+  if (!vars.SUBTITLE) vars.SUBTITLE = 'Subtitle text here';
+  if (!vars.PROFILE_PICTURE_URL) vars.PROFILE_PICTURE_URL = '';
+  if (!vars.HEADLINES) vars.HEADLINES = 'Breaking News|Live Update|Just In';
+  const html = substitute(theme.html, vars);
+  const css = substitute(theme.css, vars);
+  return { id, html, css, vars };
+}
+
+/* ═══════════ Renderer ═══════════ */
+function renderSlot(slotEl, slug, overrides) {
+  const { id, html, css, vars } = renderTemplate(slug, overrides);
+  const renderDiv = slotEl.querySelector('.slot-render') || slotEl;
+  renderDiv.innerHTML = '';
+
+  const styleEl = document.createElement('style');
+  styleEl.textContent = css;
+  renderDiv.appendChild(styleEl);
+
+  const wrapper = document.createElement('div');
+  wrapper.id = id;
+  wrapper.innerHTML = html;
+  renderDiv.appendChild(wrapper);
+
+  // Execute headline-ticker script
+  const theme = THEMES[slug];
+  if (theme.script) {
+    const scriptEl = document.createElement('script');
+    scriptEl.textContent = theme.script.replace(/\{ID\}/g, id);
+    renderDiv.appendChild(scriptEl);
+  }
+
+  slotEl._vfId = id;
+  slotEl._vfSlug = slug;
+  return { id, wrapper };
+}
+
+/* ═══════════ State ═══════════ */
+let viewMode = 'single';
+let activeSlug = 'network-bar';
+let compareChecked = new Set(['network-bar', 'anchor-card', 'breaking-news']);
+let animsPaused = false;
+let loopInterval = null;
+
+/* ═══════════ Controls ═══════════ */
+function getControlValues() {
+  const vals = {};
+  document.querySelectorAll('#sidebar [data-param]').forEach(el => {
+    const p = el.dataset.param;
+    if (p.endsWith('_TEXT')) return; // skip text mirrors
+    if (el.type === 'range') vals[p] = Number(el.value);
+    else vals[p] = el.value;
+  });
+  return vals;
+}
+
+function setControlsFromDefaults(slug) {
+  const d = THEMES[slug].defaults;
+  const theme = THEMES[slug];
+
+  // Colors
+  ['PRIMARY_COLOR','SECONDARY_COLOR','TITLE_COLOR','SUBTITLE_COLOR'].forEach(k => {
+    const picker = document.querySelector(`[data-param="${k}"]`);
+    const text = document.querySelector(`[data-param="${k}_TEXT"]`);
+    if (picker) picker.value = d[k] || '#000000';
+    if (text) text.value = d[k] || '#000000';
+  });
+
+  // Ranges
+  ['OPACITY','RADIUS','TITLE_SIZE','SUBTITLE_SIZE'].forEach(k => {
+    const el = document.querySelector(`[data-param="${k}"]`);
+    if (el) { el.value = d[k]; document.getElementById('val-'+k).textContent = d[k]; }
+  });
+
+  // Anim
+  document.getElementById('anim-in').value = d.ANIM_IN || 'animate__fadeInUp';
+  document.getElementById('anim-out').value = d.ANIM_OUT || 'animate__fadeOutDown';
+
+  // Conditional rows
+  document.getElementById('avatar-row').style.display = theme.hasAvatar ? 'flex' : 'none';
+  document.getElementById('headlines-row').style.display = theme.hasHeadlines ? 'flex' : 'none';
+}
+
+/* ═══════════ Render All ═══════════ */
+const canvas = document.getElementById('canvas');
+
+function renderAll() {
+  const overrides = getControlValues();
+  canvas.innerHTML = '';
+
+  if (viewMode === 'single') {
+    canvas.className = 'single-mode';
+    const slot = document.createElement('div');
+    slot.className = 'preview-slot';
+    slot.innerHTML = '<div class="slot-render"></div>';
+    canvas.appendChild(slot);
+    renderSlot(slot, activeSlug, overrides);
+  } else {
+    canvas.className = 'compare-mode';
+    compareChecked.forEach(slug => {
+      const theme = THEMES[slug];
+      const slot = document.createElement('div');
+      slot.className = 'preview-slot' + (slug === activeSlug ? ' slot-active' : '');
+      slot.innerHTML = `<div class="slot-label">${theme.name}</div><div class="slot-render"></div>`;
+      slot.addEventListener('click', () => {
+        activeSlug = slug;
+        setControlsFromDefaults(slug);
+        renderAll();
+      });
+      canvas.appendChild(slot);
+      // Use theme's own defaults in compare mode (not sidebar overrides) unless active
+      const useOverrides = slug === activeSlug ? overrides : {};
+      renderSlot(slot, slug, useOverrides);
+    });
+  }
+
+  if (animsPaused) togglePauseAll(true);
+}
+
+/* ═══════════ Theme List ═══════════ */
+function buildThemeList() {
+  const list = document.getElementById('theme-list');
+  list.innerHTML = '';
+  for (const [slug, theme] of Object.entries(THEMES)) {
+    const item = document.createElement('div');
+    item.className = 'theme-item' + (slug === activeSlug ? ' active' : '');
+
+    if (viewMode === 'compare') {
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = compareChecked.has(slug);
+      cb.addEventListener('change', () => {
+        if (cb.checked) compareChecked.add(slug);
+        else compareChecked.delete(slug);
+        renderAll();
+      });
+      item.appendChild(cb);
+    }
+
+    const dot = document.createElement('span');
+    dot.className = 'dot';
+    dot.style.background = theme.color;
+    item.appendChild(dot);
+
+    const name = document.createElement('span');
+    name.textContent = theme.name;
+    item.appendChild(name);
+
+    item.addEventListener('click', (e) => {
+      if (e.target.type === 'checkbox') return;
+      activeSlug = slug;
+      setControlsFromDefaults(slug);
+      buildThemeList();
+      renderAll();
+    });
+
+    list.appendChild(item);
+  }
+}
+
+/* ═══════════ Animation Controls ═══════════ */
+function getActiveRoot() {
+  const slots = canvas.querySelectorAll('.preview-slot');
+  for (const s of slots) {
+    if (viewMode === 'single' || s._vfSlug === activeSlug) {
+      return s.querySelector('[data-slt-root]');
+    }
+  }
+  return null;
+}
+
+function playAnim(cls) {
+  const root = getActiveRoot();
+  if (!root) return Promise.resolve();
+  return new Promise(resolve => {
+    root.classList.remove(...[...root.classList].filter(c => c.startsWith('animate__')));
+    void root.offsetWidth;
+    root.classList.add('animate__animated', cls);
+    const onEnd = () => {
+      root.removeEventListener('animationend', onEnd);
+      root.classList.remove('animate__animated', cls);
+      resolve();
+    };
+    root.addEventListener('animationend', onEnd);
+    setTimeout(() => { onEnd(); }, 3000); // safety
+  });
+}
+
+function togglePauseAll(paused) {
+  canvas.querySelectorAll('*').forEach(el => {
+    el.style.animationPlayState = paused ? 'paused' : '';
+  });
+}
+
+/* ═══════════ Toast ═══════════ */
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+/* ═══════════ Init ═══════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  // View mode
+  document.querySelectorAll('[data-view]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      viewMode = btn.dataset.view;
+      document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      buildThemeList();
+      renderAll();
+    });
+  });
+
+  // Controls -> re-render (debounced)
+  let renderTimer;
+  function scheduleRender() {
+    clearTimeout(renderTimer);
+    renderTimer = setTimeout(renderAll, 60);
+  }
+
+  document.querySelectorAll('#sidebar input[data-param], #sidebar select').forEach(el => {
+    el.addEventListener('input', () => {
+      const p = el.dataset.param;
+      // Sync color picker <-> text input
+      if (p && p.endsWith('_TEXT')) {
+        const base = p.replace('_TEXT', '');
+        const picker = document.querySelector(`[data-param="${base}"]`);
+        if (picker) picker.value = el.value;
+      } else if (el.type === 'color') {
+        const text = document.querySelector(`[data-param="${p}_TEXT"]`);
+        if (text) text.value = el.value;
+      }
+      // Update range value displays
+      if (el.type === 'range') {
+        const valEl = document.getElementById('val-' + p);
+        if (valEl) valEl.textContent = el.value;
+      }
+      scheduleRender();
+    });
+  });
+
+  // Animation buttons
+  document.getElementById('btn-play-in').addEventListener('click', () => {
+    playAnim(document.getElementById('anim-in').value);
+  });
+  document.getElementById('btn-play-out').addEventListener('click', () => {
+    playAnim(document.getElementById('anim-out').value);
+  });
+  document.getElementById('btn-play-both').addEventListener('click', async () => {
+    await playAnim(document.getElementById('anim-in').value);
+    await new Promise(r => setTimeout(r, 1500));
+    await playAnim(document.getElementById('anim-out').value);
+  });
+  document.getElementById('btn-pause-anims').addEventListener('click', function() {
+    animsPaused = !animsPaused;
+    this.classList.toggle('active', animsPaused);
+    this.textContent = animsPaused ? 'Resume CSS' : 'Pause CSS';
+    togglePauseAll(animsPaused);
+  });
+
+  // Reset
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    setControlsFromDefaults(activeSlug);
+    document.querySelector('[data-param="TITLE"]').value = 'Sample Title';
+    document.querySelector('[data-param="SUBTITLE"]').value = 'Subtitle text here';
+    renderAll();
+    toast('Reset to defaults');
+  });
+
+  // Copy
+  document.getElementById('btn-copy-css').addEventListener('click', () => {
+    const { css } = renderTemplate(activeSlug, getControlValues());
+    navigator.clipboard.writeText(css).then(() => toast('CSS copied'));
+  });
+  document.getElementById('btn-copy-html').addEventListener('click', () => {
+    const { html } = renderTemplate(activeSlug, getControlValues());
+    navigator.clipboard.writeText(html).then(() => toast('HTML copied'));
+  });
+
+  // Boot
+  setControlsFromDefaults(activeSlug);
+  buildThemeList();
+  renderAll();
+});
+</script>
+</body>
+</html>
