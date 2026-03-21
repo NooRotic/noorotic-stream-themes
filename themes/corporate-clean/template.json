@@ -1,0 +1,21 @@
+{
+  "name": "Corporate Clean",
+  "description": "Light card with subtle shadow, bottom accent gradient. Webinar/conference style.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#2563eb",
+    "SECONDARY_COLOR": "#7c3aed",
+    "TITLE_COLOR": "#111827",
+    "SUBTITLE_COLOR": "#6b7280",
+    "OPACITY": 96,
+    "RADIUS": 10,
+    "FONT_FAMILY": "Segoe UI",
+    "TITLE_SIZE": 38,
+    "SUBTITLE_SIZE": 20,
+    "AVATAR_WIDTH": 64,
+    "AVATAR_HEIGHT": 64,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

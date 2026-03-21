@@ -1,0 +1,19 @@
+{
+  "name": "Network Bar",
+  "description": "CNN/Fox-style bottom bar with cyberpunk matrix accent. Sharp, no avatar.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#00ff88",
+    "SECONDARY_COLOR": "#0a0a0a",
+    "TITLE_COLOR": "#f9fafb",
+    "SUBTITLE_COLOR": "#cccccc",
+    "OPACITY": 92,
+    "RADIUS": 0,
+    "FONT_FAMILY": "Orbitron",
+    "TITLE_SIZE": 36,
+    "SUBTITLE_SIZE": 20,
+    "ANIM_IN": "animate__fadeInLeft",
+    "ANIM_OUT": "animate__fadeOutLeft"
+  }
+}

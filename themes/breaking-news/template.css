@@ -1,0 +1,66 @@
+/* VinciFlow Theme: breaking-news — Red alert bar, BREAKING badge, high contrast */
+
+#{{ID}} .brk-card {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+  font-family: {{FONT_FAMILY}}, 'Segoe UI', system-ui, sans-serif;
+}
+
+#{{ID}} .brk-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+  opacity: calc({{OPACITY}} / 100);
+  pointer-events: none;
+}
+
+#{{ID}} .brk-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+#{{ID}} .brk-badge {
+  display: flex;
+  align-items: center;
+  padding: 12px 18px;
+  background: {{PRIMARY_COLOR}};
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: brk-pulse-{{ID}} 2s ease-in-out infinite;
+}
+
+@keyframes brk-pulse-{{ID}} {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+#{{ID}} .brk-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 12px 22px;
+}
+
+#{{ID}} .brk-title {
+  font-weight: 700;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.15;
+  color: {{TITLE_COLOR}};
+}
+
+#{{ID}} .brk-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.85;
+}

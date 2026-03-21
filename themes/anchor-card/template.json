@@ -1,0 +1,21 @@
+{
+  "name": "Anchor Card",
+  "description": "Avatar circle with dark background and left color stripe. Classic broadcast look.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#3b82f6",
+    "SECONDARY_COLOR": "#111827",
+    "TITLE_COLOR": "#f9fafb",
+    "SUBTITLE_COLOR": "#d1d5db",
+    "OPACITY": 90,
+    "RADIUS": 8,
+    "FONT_FAMILY": "Segoe UI",
+    "TITLE_SIZE": 40,
+    "SUBTITLE_SIZE": 22,
+    "AVATAR_WIDTH": 80,
+    "AVATAR_HEIGHT": 80,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

@@ -1,0 +1,69 @@
+/* VinciFlow Theme: corporate-clean — Light card, shadow, accent line, webinar style */
+
+#{{ID}} .corp-card {
+  position: relative;
+  display: inline-block;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08);
+  font-family: {{FONT_FAMILY}}, 'Segoe UI', system-ui, sans-serif;
+}
+
+#{{ID}} .corp-bg {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: calc({{OPACITY}} / 100);
+  pointer-events: none;
+}
+
+#{{ID}} .corp-accent-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, {{PRIMARY_COLOR}}, {{SECONDARY_COLOR}});
+}
+
+#{{ID}} .corp-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
+}
+
+#{{ID}} .corp-avatar {
+  width: {{AVATAR_WIDTH}}px;
+  height: {{AVATAR_HEIGHT}}px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #f3f4f6;
+}
+
+#{{ID}} .corp-avatar:not([src]),
+#{{ID}} .corp-avatar[src=""],
+#{{ID}} .corp-avatar[src="./"] {
+  display: none !important;
+}
+
+#{{ID}} .corp-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#{{ID}} .corp-title {
+  font-weight: 600;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.2;
+  color: {{TITLE_COLOR}};
+}
+
+#{{ID}} .corp-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+}

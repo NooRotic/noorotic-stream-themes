@@ -1,0 +1,54 @@
+/* VinciFlow Theme: network-bar — CNN/Fox-style bottom bar, sharp edges */
+/* Stream-matched: RipTheAI cyberpunk/matrix palette */
+
+#{{ID}} .nbar-card {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  font-family: {{FONT_FAMILY}}, 'Orbitron', 'Segoe UI', system-ui, sans-serif;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  box-shadow:
+    0 0 16px rgba(0, 255, 136, 0.25),
+    0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+#{{ID}} .nbar-accent {
+  width: 6px;
+  flex-shrink: 0;
+  background: {{PRIMARY_COLOR}};
+  box-shadow: 0 0 12px {{PRIMARY_COLOR}};
+}
+
+#{{ID}} .nbar-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgba(10, 10, 10, calc({{OPACITY}} / 100)), rgba(26, 26, 26, calc({{OPACITY}} / 100)));
+  backdrop-filter: blur(6px);
+}
+
+#{{ID}} .nbar-title {
+  font-weight: 700;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.1;
+  color: {{TITLE_COLOR}};
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 8px {{PRIMARY_COLOR}}, 0 0 2px #fff;
+}
+
+#{{ID}} .nbar-sep {
+  color: {{PRIMARY_COLOR}};
+  font-size: {{TITLE_SIZE}}px;
+  opacity: 0.5;
+  font-weight: 300;
+}
+
+#{{ID}} .nbar-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.9;
+  letter-spacing: 0.04em;
+}

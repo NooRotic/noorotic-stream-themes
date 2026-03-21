@@ -1,0 +1,119 @@
+/* VinciFlow Theme: tiedye-trip — Psychedelic animated tie-dye color shifting */
+
+@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Fredoka:wght@500;700&display=swap');
+
+#{{ID}} .dye-card {
+  position: relative;
+  display: inline-block;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  font-family: {{FONT_FAMILY}}, 'Fredoka', 'Righteous', system-ui, sans-serif;
+  animation: dye-hue-rotate-{{ID}} 8s linear infinite;
+}
+
+/* Rotating hue on the entire card */
+@keyframes dye-hue-rotate-{{ID}} {
+  0%   { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* Animated tie-dye swirl background */
+#{{ID}} .dye-swirl {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    radial-gradient(circle at 30% 40%, #ff006e 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, #ffbe0b 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, #8338ec 0%, transparent 50%),
+    radial-gradient(circle at 20% 70%, #3a86ff 0%, transparent 50%),
+    radial-gradient(circle at 80% 60%, #ff006e 0%, transparent 50%),
+    radial-gradient(circle at 60% 20%, #06d6a0 0%, transparent 40%),
+    linear-gradient(135deg, #fb5607, #ff006e, #8338ec, #3a86ff, #06d6a0, #ffbe0b);
+  opacity: calc({{OPACITY}} / 100);
+  animation: dye-swirl-move-{{ID}} 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes dye-swirl-move-{{ID}} {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+  33%  { transform: translate(-10%, 5%) rotate(120deg) scale(1.1); }
+  66%  { transform: translate(5%, -10%) rotate(240deg) scale(0.95); }
+  100% { transform: translate(-5%, 8%) rotate(360deg) scale(1.05); }
+}
+
+/* Frosted glass overlay so text remains readable */
+#{{ID}} .dye-glass {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
+#{{ID}} .dye-content {
+  position: relative;
+  z-index: 2;
+  padding: 18px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#{{ID}} .dye-title {
+  font-weight: 700;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.15;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.3);
+  /* Rainbow text with animated gradient */
+  background: linear-gradient(
+    90deg,
+    #ff006e, #ffbe0b, #06d6a0, #3a86ff, #8338ec, #ff006e
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: dye-text-shift-{{ID}} 4s linear infinite;
+}
+
+@keyframes dye-text-shift-{{ID}} {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+#{{ID}} .dye-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: #ffffff;
+  opacity: 0.9;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.04em;
+}
+
+/* Animated border glow that cycles colors */
+#{{ID}} .dye-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid transparent;
+  background: linear-gradient(90deg, #ff006e, #ffbe0b, #06d6a0, #3a86ff, #8338ec, #ff006e) border-box;
+  background-size: 300% auto;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: dye-border-flow-{{ID}} 3s linear infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+
+@keyframes dye-border-flow-{{ID}} {
+  0%   { background-position: 0% center; }
+  100% { background-position: 300% center; }
+}

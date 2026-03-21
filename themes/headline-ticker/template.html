@@ -1,0 +1,65 @@
+<div class="htk-card" data-slt-root>
+  <div class="htk-bg" aria-hidden="true"></div>
+  <div class="htk-glow-edge" aria-hidden="true"></div>
+  <div class="htk-content">
+    <div class="htk-label">LIVE</div>
+    <div class="htk-text-wrap">
+      <div class="htk-title" data-title>{{TITLE}}</div>
+      <div class="htk-subtitle" data-subtitle>{{SUBTITLE}}</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById('{{ID}}');
+  if (!root) return;
+
+  const titleEl = root.querySelector('.htk-title');
+  const subtitleEl = root.querySelector('.htk-subtitle');
+  if (!titleEl || !subtitleEl) return;
+
+  // Headlines rotate from data-headlines attribute or parameters JSON
+  // Write headlines as a "|" separated string to data-headlines param:
+  // e.g. {"headlines": "First headline|Second headline|Third one"}
+  let headlineIndex = 0;
+
+  function getHeadlines() {
+    const raw = root.querySelector('[data-headlines]');
+    if (raw && raw.textContent.trim()) {
+      return raw.textContent.split('|').map(s => s.trim()).filter(Boolean);
+    }
+    return [];
+  }
+
+  function cycleHeadline() {
+    const headlines = getHeadlines();
+    if (headlines.length < 2) return; // need 2+ to cycle
+
+    headlineIndex = (headlineIndex + 1) % headlines.length;
+    const next = headlines[headlineIndex];
+
+    // Animate out
+    titleEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    titleEl.style.opacity = '0';
+    titleEl.style.transform = 'translateY(-12px)';
+
+    setTimeout(() => {
+      titleEl.textContent = next;
+      titleEl.style.transform = 'translateY(12px)';
+
+      // Force reflow
+      void titleEl.offsetWidth;
+
+      // Animate in
+      titleEl.style.opacity = '1';
+      titleEl.style.transform = 'translateY(0)';
+    }, 420);
+  }
+
+  setInterval(cycleHeadline, 5000);
+})();
+</script>
+
+<!-- Hidden element for headline data binding from parameters JSON -->
+<span data-headlines style="display:none"></span>

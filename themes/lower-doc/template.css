@@ -1,0 +1,46 @@
+/* VinciFlow Theme: lower-doc — Documentary dark bar, large title, no avatar */
+
+#{{ID}} .ldoc-card {
+  position: relative;
+  display: inline-block;
+  font-family: {{FONT_FAMILY}}, Georgia, 'Times New Roman', serif;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  min-width: 320px;
+}
+
+#{{ID}} .ldoc-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 15, 15, 0.98), rgba(25, 25, 25, 0.92));
+  opacity: calc({{OPACITY}} / 100);
+  pointer-events: none;
+}
+
+#{{ID}} .ldoc-content {
+  position: relative;
+  z-index: 1;
+  padding: 20px 28px 16px;
+}
+
+#{{ID}} .ldoc-title {
+  font-weight: 700;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.1;
+  color: {{TITLE_COLOR}};
+  letter-spacing: 0.02em;
+}
+
+#{{ID}} .ldoc-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+  margin-top: 4px;
+  opacity: 0.75;
+  font-style: italic;
+}
+
+#{{ID}} .ldoc-rule {
+  height: 3px;
+  background: linear-gradient(90deg, {{PRIMARY_COLOR}}, transparent);
+}

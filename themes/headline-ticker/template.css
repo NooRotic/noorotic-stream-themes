@@ -1,0 +1,123 @@
+/* VinciFlow Theme: headline-ticker — Auto-cycling headline with glowing edges */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap');
+
+#{{ID}} .htk-card {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  font-family: {{FONT_FAMILY}}, 'Inter', system-ui, sans-serif;
+  box-shadow:
+    0 0 12px rgba(81, 191, 226, 0.2),
+    0 6px 24px rgba(0, 0, 0, 0.5);
+}
+
+#{{ID}} .htk-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0a0a14, #12121f);
+  opacity: calc({{OPACITY}} / 100);
+  pointer-events: none;
+}
+
+/* Animated glowing edge — travels around the border */
+#{{ID}} .htk-glow-edge {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#{{ID}} .htk-glow-edge::before {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, {{PRIMARY_COLOR}} 0%, transparent 70%);
+  opacity: 0.7;
+  animation: htk-orbit-{{ID}} 4s linear infinite;
+}
+
+@keyframes htk-orbit-{{ID}} {
+  0%   { top: -60px; left: -60px; }
+  25%  { top: -60px; left: calc(100% - 60px); }
+  50%  { top: calc(100% - 60px); left: calc(100% - 60px); }
+  75%  { top: calc(100% - 60px); left: -60px; }
+  100% { top: -60px; left: -60px; }
+}
+
+/* Inner border line */
+#{{ID}} .htk-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 4;
+}
+
+#{{ID}} .htk-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+/* LIVE badge with pulse dot */
+#{{ID}} .htk-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 16px;
+  background: {{PRIMARY_COLOR}};
+  color: #000000;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#{{ID}} .htk-label::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: htk-dot-pulse-{{ID}} 1.5s ease-in-out infinite;
+}
+
+@keyframes htk-dot-pulse-{{ID}} {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+#{{ID}} .htk-text-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 12px 24px;
+  min-width: 280px;
+}
+
+#{{ID}} .htk-title {
+  font-weight: 900;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.15;
+  color: {{TITLE_COLOR}};
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+#{{ID}} .htk-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.8;
+}

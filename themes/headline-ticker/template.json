@@ -1,0 +1,19 @@
+{
+  "name": "Headline Ticker",
+  "description": "Auto-cycling headline rotator with orbiting glow edge and LIVE badge. Feed headlines via parameters JSON.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#00ff88",
+    "SECONDARY_COLOR": "#0a0a14",
+    "TITLE_COLOR": "#ffffff",
+    "SUBTITLE_COLOR": "#aaaaaa",
+    "OPACITY": 94,
+    "RADIUS": 6,
+    "FONT_FAMILY": "Inter",
+    "TITLE_SIZE": 32,
+    "SUBTITLE_SIZE": 18,
+    "ANIM_IN": "animate__fadeInLeft",
+    "ANIM_OUT": "animate__fadeOutRight"
+  }
+}

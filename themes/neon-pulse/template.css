@@ -1,0 +1,106 @@
+/* VinciFlow Theme: neon-pulse — Glowing animated border, pulsing shadow drops */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
+
+#{{ID}} .neon-card {
+  position: relative;
+  display: inline-block;
+  border-radius: {{RADIUS}}px;
+  overflow: visible;
+  font-family: {{FONT_FAMILY}}, 'Orbitron', system-ui, sans-serif;
+  animation: neon-breathe-{{ID}} 3s ease-in-out infinite;
+}
+
+/* Pulsing outer glow — shadow drops that breathe */
+@keyframes neon-breathe-{{ID}} {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px {{PRIMARY_COLOR}}) drop-shadow(0 0 20px {{PRIMARY_COLOR}});
+  }
+  50% {
+    filter: drop-shadow(0 0 16px {{PRIMARY_COLOR}}) drop-shadow(0 0 40px {{PRIMARY_COLOR}}) drop-shadow(0 0 60px {{PRIMARY_COLOR}});
+  }
+}
+
+#{{ID}} .neon-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #050510, #0a0a1a);
+  opacity: calc({{OPACITY}} / 100);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Animated border — color-cycling glow edge */
+#{{ID}} .neon-glow-border {
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    var(--neon-angle-{{ID}}, 0deg),
+    {{PRIMARY_COLOR}},
+    {{SECONDARY_COLOR}},
+    #ff00ff,
+    {{PRIMARY_COLOR}}
+  );
+  z-index: 0;
+  animation: neon-border-spin-{{ID}} 4s linear infinite;
+}
+
+@keyframes neon-border-spin-{{ID}} {
+  0%   { --neon-angle-{{ID}}: 0deg; }
+  100% { --neon-angle-{{ID}}: 360deg; }
+}
+
+/* Fallback for browsers without @property — use rotating pseudo */
+#{{ID}} .neon-glow-border::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: linear-gradient(135deg, #050510, #0a0a1a);
+  border-radius: inherit;
+  z-index: 1;
+}
+
+#{{ID}} .neon-content {
+  position: relative;
+  z-index: 2;
+  padding: 16px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#{{ID}} .neon-title {
+  font-weight: 900;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.1;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow:
+    0 0 7px {{PRIMARY_COLOR}},
+    0 0 20px {{PRIMARY_COLOR}},
+    0 0 42px {{PRIMARY_COLOR}};
+  animation: neon-text-flicker-{{ID}} 5s ease-in-out infinite;
+}
+
+@keyframes neon-text-flicker-{{ID}} {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow:
+      0 0 7px {{PRIMARY_COLOR}},
+      0 0 20px {{PRIMARY_COLOR}},
+      0 0 42px {{PRIMARY_COLOR}};
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+    opacity: 0.85;
+  }
+}
+
+#{{ID}} .neon-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+  letter-spacing: 0.06em;
+  opacity: 0.8;
+}

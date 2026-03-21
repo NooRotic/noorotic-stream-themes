@@ -1,0 +1,19 @@
+{
+  "name": "Tie-Dye Trip",
+  "description": "Psychedelic animated tie-dye with color-shifting background, rainbow text, and flowing border.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#ff006e",
+    "SECONDARY_COLOR": "#8338ec",
+    "TITLE_COLOR": "#ffffff",
+    "SUBTITLE_COLOR": "#ffffff",
+    "OPACITY": 85,
+    "RADIUS": 10,
+    "FONT_FAMILY": "Fredoka",
+    "TITLE_SIZE": 40,
+    "SUBTITLE_SIZE": 20,
+    "ANIM_IN": "animate__zoomIn",
+    "ANIM_OUT": "animate__zoomOut"
+  }
+}

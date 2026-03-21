@@ -1,0 +1,71 @@
+/* VinciFlow Theme: anchor-card — Avatar circle, dark bg, left color stripe */
+
+#{{ID}} .anchor-card {
+  position: relative;
+  display: inline-block;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  font-family: {{FONT_FAMILY}}, 'Segoe UI', system-ui, sans-serif;
+}
+
+#{{ID}} .anchor-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #111827, #1f2937);
+  opacity: calc({{OPACITY}} / 100);
+  pointer-events: none;
+}
+
+#{{ID}} .anchor-stripe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: {{PRIMARY_COLOR}};
+}
+
+#{{ID}} .anchor-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px 16px 20px;
+}
+
+#{{ID}} .anchor-avatar {
+  width: {{AVATAR_WIDTH}}px;
+  height: {{AVATAR_HEIGHT}}px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid {{PRIMARY_COLOR}};
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+#{{ID}} .anchor-avatar:not([src]),
+#{{ID}} .anchor-avatar[src=""],
+#{{ID}} .anchor-avatar[src="./"] {
+  display: none !important;
+}
+
+#{{ID}} .anchor-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+#{{ID}} .anchor-title {
+  font-weight: 700;
+  font-size: {{TITLE_SIZE}}px;
+  line-height: 1.15;
+  color: {{TITLE_COLOR}};
+}
+
+#{{ID}} .anchor-subtitle {
+  font-size: {{SUBTITLE_SIZE}}px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.85;
+}

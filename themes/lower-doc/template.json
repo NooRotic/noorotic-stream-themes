@@ -1,0 +1,19 @@
+{
+  "name": "Lower Documentary",
+  "description": "Dark cinematic bar with large title and fade-out accent rule. No avatar.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#d4a574",
+    "SECONDARY_COLOR": "#0f0f0f",
+    "TITLE_COLOR": "#f5f5f4",
+    "SUBTITLE_COLOR": "#a8a29e",
+    "OPACITY": 95,
+    "RADIUS": 0,
+    "FONT_FAMILY": "Georgia",
+    "TITLE_SIZE": 44,
+    "SUBTITLE_SIZE": 22,
+    "ANIM_IN": "animate__fadeIn",
+    "ANIM_OUT": "animate__fadeOut"
+  }
+}
