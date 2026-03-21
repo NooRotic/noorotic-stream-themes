@@ -2,6 +2,31 @@
 
 Custom lower third templates for [VinciFlow](https://github.com/mmlTools/vinci-flow) — a broadcast-grade stream graphics controller for OBS Studio.
 
+## How It Works
+
+```mermaid
+flowchart TD
+    A["Clone or download this repo<br/><code>git clone ...</code><br/>(anywhere on your machine)"] --> B{"Want to preview<br/>before installing?"}
+    B -- Yes --> C["Open <b>viewer/index.html</b><br/>in any browser"]
+    C --> D["Browse themes, tweak colors,<br/>test animations, compare side-by-side"]
+    D --> E["Pick the themes you want"]
+    B -- No --> E
+    E --> F["Find your OBS themes directory"]
+    F --> G{"How is OBS installed?"}
+    G -- "Default" --> H["<code>C:\Program Files\obs-studio\data\themes\</code>"]
+    G -- "Portable / Custom" --> I["<code>&lt;your-obs-folder&gt;\data\themes\</code>"]
+    H --> J["Copy theme folders<br/>from <code>themes/</code> into that directory"]
+    I --> J
+    J --> K["Restart OBS or click<br/><b>Reload</b> in VinciFlow dock"]
+    K --> L["Themes available in<br/>VinciFlow theme selector"]
+
+    style A fill:#1a1a2e,stroke:#00ff88,color:#fff
+    style C fill:#1a1a2e,stroke:#00bfff,color:#fff
+    style D fill:#1a1a2e,stroke:#00bfff,color:#fff
+    style J fill:#1a1a2e,stroke:#ff6b35,color:#fff
+    style L fill:#0d3320,stroke:#00ff88,color:#00ff88
+```
+
 ## Prerequisites
 
 - [OBS Studio](https://obsproject.com/) 29+ (Windows 64-bit)
@@ -14,11 +39,13 @@ Custom lower third templates for [VinciFlow](https://github.com/mmlTools/vinci-f
 git clone https://github.com/NooRotic/noorotic-stream-themes.git
 cd noorotic-stream-themes
 
-# 2. Copy the themes you want into your OBS VinciFlow themes directory
+# 2. Preview themes (optional — no OBS needed)
+#    Open viewer/index.html in your browser
+
+# 3. Copy the themes you want into your OBS VinciFlow themes directory
 #    Find your OBS themes path:
 #      Default install:   C:\Program Files\obs-studio\data\themes\
 #      Portable install:  <your-obs-folder>\data\themes\
-#      Example:           C:\OBS\obs-studio\data\themes\
 
 # Copy a single theme:
 cp -r themes/neon-pulse "C:\Program Files\obs-studio\data\themes\neon-pulse"
@@ -26,29 +53,31 @@ cp -r themes/neon-pulse "C:\Program Files\obs-studio\data\themes\neon-pulse"
 # Or copy all themes at once:
 cp -r themes/* "C:\Program Files\obs-studio\data\themes\"
 
-# 3. Restart OBS or click "Reload" in the VinciFlow dock
+# 4. Restart OBS or click "Reload" in the VinciFlow dock
 ```
 
 > **Windows users:** Use `xcopy` or drag-and-drop in Explorer if you don't have `cp`. The key is to get each theme folder (e.g., `themes/neon-pulse/`) into your OBS `data/themes/` directory.
 
 ## Development Workflow
 
-This repo is the **source of truth** for theme development. Work here, then deploy to OBS:
+This repo is a **standalone project** — clone it anywhere, develop here, then deploy to OBS by copying:
 
 ```
-noorotic-stream-themes/     <-- You develop here (git tracked)
+~/projects/noorotic-stream-themes/    <-- You develop here (git tracked)
   themes/
     neon-pulse/
     breaking-news/
+    scoreboard/
     ...
   viewer/
-    index.html              <-- Preview tool (open in browser)
+    index.html                        <-- Preview tool (open in browser)
 
-OBS install/data/themes/    <-- You copy themes here to use in OBS
-  default/                  <-- VinciFlow's built-in theme (don't touch)
-  neon-pulse/               <-- Copied from this repo
-  breaking-news/            <-- Copied from this repo
-  ...
+C:\Program Files\obs-studio\          <-- OBS install (separate)
+  data/themes/
+    default/                          <-- VinciFlow built-in (don't touch)
+    neon-pulse/                       <-- Copied from this repo
+    breaking-news/                    <-- Copied from this repo
+    ...
 ```
 
 **Preview without OBS:** Open `viewer/index.html` in any browser to preview, compare, and tweak all themes with live controls.
@@ -68,6 +97,14 @@ OBS install/data/themes/    <-- You copy themes here to use in OBS
 | `neon-pulse` | Glowing border, breathing drop-shadows, neon flicker | Heavy | No |
 | `tiedye-trip` | Psychedelic tie-dye swirl, rainbow text, color cycling | Heavy | No |
 | `headline-ticker` | Auto-cycling headlines, orbiting glow, LIVE badge | Heavy | No |
+
+### Specialty Themes (interactive, data-driven)
+
+| Theme | Style | Data Bindings |
+|---|---|---|
+| `scoreboard` | Dual-team scoreboard with glowing digits, VS center, ticker | `team1`, `team2`, `score1`, `score2`, `round`, `status` |
+| `poll-results` | 4-option live poll with animated progress bars | `opt1label`, `opt1pct`, `opt2label`, `opt2pct`, etc. |
+| `countdown` | Self-contained timer with blinking colons and progress bar | `target` (ISO date) or `duration` (seconds) |
 
 ### Wide Themes (full-width, bottom of screen)
 
