@@ -1,0 +1,114 @@
+/* VinciFlow Theme: poll-results — Live poll with animated progress bars */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap');
+
+#{{ID}} .poll-card {
+  position: relative;
+  display: inline-block;
+  border-radius: {{RADIUS}}px;
+  overflow: hidden;
+  font-family: {{FONT_FAMILY}}, 'Inter', system-ui, sans-serif;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  min-width: 380px;
+  max-width: 500px;
+}
+
+#{{ID}} .poll-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0a0a14, #111827);
+  opacity: calc({{OPACITY}} / 100);
+  pointer-events: none;
+}
+
+#{{ID}} .poll-content {
+  position: relative;
+  z-index: 1;
+  padding: 16px 20px;
+}
+
+/* Header */
+#{{ID}} .poll-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+#{{ID}} .poll-badge {
+  padding: 3px 10px;
+  background: {{PRIMARY_COLOR}};
+  color: #000;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+#{{ID}} .poll-question {
+  font-weight: 700;
+  font-size: {{TITLE_SIZE}}px;
+  color: {{TITLE_COLOR}};
+  line-height: 1.2;
+}
+
+/* Options */
+#{{ID}} .poll-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#{{ID}} .poll-option-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3px;
+}
+
+#{{ID}} .poll-option-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: {{TITLE_COLOR}};
+}
+
+#{{ID}} .poll-option-pct {
+  font-size: 14px;
+  font-weight: 900;
+  color: {{PRIMARY_COLOR}};
+  font-variant-numeric: tabular-nums;
+}
+
+#{{ID}} .poll-bar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+#{{ID}} .poll-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
+}
+
+#{{ID}} .poll-bar-1 { background: {{PRIMARY_COLOR}}; box-shadow: 0 0 8px {{PRIMARY_COLOR}}; }
+#{{ID}} .poll-bar-2 { background: {{SECONDARY_COLOR}}; box-shadow: 0 0 8px {{SECONDARY_COLOR}}; }
+#{{ID}} .poll-bar-3 { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+#{{ID}} .poll-bar-4 { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+
+/* Footer */
+#{{ID}} .poll-footer {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#{{ID}} .poll-total {
+  font-size: 12px;
+  color: {{SUBTITLE_COLOR}};
+  opacity: 0.7;
+}

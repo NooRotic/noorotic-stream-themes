@@ -1,0 +1,106 @@
+<div class="cd-card" data-slt-root>
+  <div class="cd-bg" aria-hidden="true"></div>
+  <div class="cd-glow" aria-hidden="true"></div>
+  <div class="cd-content">
+    <div class="cd-label" data-title>{{TITLE}}</div>
+    <div class="cd-timer">
+      <div class="cd-digit-group">
+        <span class="cd-digit" data-hours>00</span>
+        <span class="cd-unit">HRS</span>
+      </div>
+      <span class="cd-sep">:</span>
+      <div class="cd-digit-group">
+        <span class="cd-digit" data-minutes>00</span>
+        <span class="cd-unit">MIN</span>
+      </div>
+      <span class="cd-sep">:</span>
+      <div class="cd-digit-group">
+        <span class="cd-digit" data-seconds>00</span>
+        <span class="cd-unit">SEC</span>
+      </div>
+    </div>
+    <div class="cd-subtitle" data-subtitle>{{SUBTITLE}}</div>
+  </div>
+  <div class="cd-progress-track" aria-hidden="true">
+    <div class="cd-progress-bar" data-progress style="width:100%"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById('{{ID}}');
+  if (!root) return;
+
+  const hoursEl = root.querySelector('[data-hours]');
+  const minsEl = root.querySelector('[data-minutes]');
+  const secsEl = root.querySelector('[data-seconds]');
+  const progressEl = root.querySelector('[data-progress]');
+  if (!hoursEl || !minsEl || !secsEl) return;
+
+  // Read target from data-target attribute (ISO string or Unix ms)
+  // Set via parameters JSON: { "target": "2026-03-21T21:00:00" }
+  // Or set duration in seconds: { "duration": "300" }
+  let targetTime = null;
+  let totalDuration = null;
+
+  function parseTarget() {
+    const targetSpan = root.querySelector('[data-target]');
+    const durationSpan = root.querySelector('[data-duration]');
+
+    if (targetSpan && targetSpan.textContent.trim()) {
+      const t = new Date(targetSpan.textContent.trim()).getTime();
+      if (!isNaN(t) && t !== targetTime) {
+        targetTime = t;
+        if (!totalDuration) totalDuration = Math.max(0, t - Date.now());
+      }
+    } else if (durationSpan && durationSpan.textContent.trim()) {
+      const secs = parseInt(durationSpan.textContent.trim());
+      if (!isNaN(secs) && secs > 0) {
+        if (!targetTime || totalDuration !== secs * 1000) {
+          totalDuration = secs * 1000;
+          targetTime = Date.now() + totalDuration;
+        }
+      }
+    }
+  }
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    parseTarget();
+
+    if (!targetTime) {
+      // Demo mode: show static 00:00:00
+      return;
+    }
+
+    const remaining = Math.max(0, targetTime - Date.now());
+    const totalSec = Math.floor(remaining / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+
+    hoursEl.textContent = pad(h);
+    minsEl.textContent = pad(m);
+    secsEl.textContent = pad(s);
+
+    // Progress bar
+    if (progressEl && totalDuration > 0) {
+      const pct = Math.max(0, (remaining / totalDuration) * 100);
+      progressEl.style.width = pct + '%';
+    }
+
+    // Flash when done
+    if (remaining <= 0) {
+      root.querySelector('.cd-timer').classList.add('cd-done');
+    }
+  }
+
+  setInterval(tick, 250);
+  tick();
+})();
+</script>
+
+<!-- Hidden data binding elements for parameters JSON -->
+<span data-target style="display:none"></span>
+<span data-duration style="display:none"></span>

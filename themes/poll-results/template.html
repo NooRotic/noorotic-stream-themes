@@ -1,0 +1,63 @@
+<div class="poll-card" data-slt-root>
+  <div class="poll-bg" aria-hidden="true"></div>
+  <div class="poll-content">
+    <div class="poll-header">
+      <div class="poll-badge">POLL</div>
+      <div class="poll-question" data-title>{{TITLE}}</div>
+    </div>
+    <div class="poll-options">
+      <div class="poll-option">
+        <div class="poll-option-row">
+          <span class="poll-option-label" data-opt1label>Option A</span>
+          <span class="poll-option-pct" data-opt1pct>0%</span>
+        </div>
+        <div class="poll-bar-track"><div class="poll-bar poll-bar-1" data-opt1bar style="width:0%"></div></div>
+      </div>
+      <div class="poll-option">
+        <div class="poll-option-row">
+          <span class="poll-option-label" data-opt2label>Option B</span>
+          <span class="poll-option-pct" data-opt2pct>0%</span>
+        </div>
+        <div class="poll-bar-track"><div class="poll-bar poll-bar-2" data-opt2bar style="width:0%"></div></div>
+      </div>
+      <div class="poll-option">
+        <div class="poll-option-row">
+          <span class="poll-option-label" data-opt3label>Option C</span>
+          <span class="poll-option-pct" data-opt3pct>0%</span>
+        </div>
+        <div class="poll-bar-track"><div class="poll-bar poll-bar-3" data-opt3bar style="width:0%"></div></div>
+      </div>
+      <div class="poll-option">
+        <div class="poll-option-row">
+          <span class="poll-option-label" data-opt4label>Option D</span>
+          <span class="poll-option-pct" data-opt4pct>0%</span>
+        </div>
+        <div class="poll-bar-track"><div class="poll-bar poll-bar-4" data-opt4bar style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="poll-footer">
+      <span class="poll-total" data-subtitle>{{SUBTITLE}}</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById('{{ID}}');
+  if (!root) return;
+
+  // Watch for percentage changes and animate bar widths
+  const observer = new MutationObserver(() => {
+    for (let i = 1; i <= 4; i++) {
+      const pctEl = root.querySelector(`[data-opt${i}pct]`);
+      const barEl = root.querySelector(`[data-opt${i}bar]`);
+      if (pctEl && barEl) {
+        const pct = parseInt(pctEl.textContent) || 0;
+        barEl.style.width = Math.min(pct, 100) + '%';
+      }
+    }
+  });
+
+  observer.observe(root, { childList: true, subtree: true, characterData: true });
+})();
+</script>

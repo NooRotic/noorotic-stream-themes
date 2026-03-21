@@ -1,0 +1,19 @@
+{
+  "name": "Poll Results",
+  "description": "Live poll with 4 animated progress bars. Feed percentages via parameters JSON.",
+  "author": "NooRotic",
+  "version": "1.0.0",
+  "defaults": {
+    "PRIMARY_COLOR": "#00ff88",
+    "SECONDARY_COLOR": "#3b82f6",
+    "TITLE_COLOR": "#ffffff",
+    "SUBTITLE_COLOR": "#aaaaaa",
+    "OPACITY": 94,
+    "RADIUS": 10,
+    "FONT_FAMILY": "Inter",
+    "TITLE_SIZE": 22,
+    "SUBTITLE_SIZE": 14,
+    "ANIM_IN": "animate__fadeInUp",
+    "ANIM_OUT": "animate__fadeOutDown"
+  }
+}

@@ -391,6 +391,312 @@ const THEMES = {
 #{{ID}} .htk-text-wrap{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:12px 24px;min-width:280px}
 #{{ID}} .htk-title{font-weight:900;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:{{TITLE_COLOR}};text-transform:uppercase;letter-spacing:0.03em;white-space:nowrap}
 #{{ID}} .htk-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};opacity:0.8}`
+},
+"scoreboard": {
+  name: "Scoreboard",
+  description: "Live game scoreboard with team scores, round info, glowing digits, and scrolling ticker.",
+  color: "#00ff88",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#00ff88",SECONDARY_COLOR:"#111827",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#cccccc",OPACITY:94,RADIUS:8,FONT_FAMILY:"Orbitron",TITLE_SIZE:42,SUBTITLE_SIZE:16,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="sb-card" data-slt-root>\n  <div class="sb-bg" aria-hidden="true"></div>\n  <div class="sb-content">\n    <div class="sb-team sb-team-left">\n      <div class="sb-team-name" data-team1>TEAM 1</div>\n      <div class="sb-team-score" data-score1>0</div>\n    </div>\n    <div class="sb-center">\n      <div class="sb-vs">VS</div>\n      <div class="sb-info" data-info>LIVE</div>\n      <div class="sb-round" data-round>Round 1</div>\n    </div>\n    <div class="sb-team sb-team-right">\n      <div class="sb-team-name" data-team2>TEAM 2</div>\n      <div class="sb-team-score" data-score2>0</div>\n    </div>\n  </div>\n  <div class="sb-ticker-bar">\n    <div class="sb-ticker-label" data-status>GAME ON</div>\n    <div class="sb-ticker-track">\n      <div class="sb-ticker-scroll">\n        <span data-ticker>Live scoreboard \u2014 Updates in real time \u2014 Powered by VinciFlow</span>\n        <span data-ticker aria-hidden="true">Live scoreboard \u2014 Updates in real time \u2014 Powered by VinciFlow</span>\n      </div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .sb-card{position:relative;display:inline-block;border-radius:{{RADIUS}}px;overflow:hidden;font-family:{{FONT_FAMILY}},'Orbitron',system-ui,sans-serif;box-shadow:0 0 20px rgba(0,255,136,0.2),0 8px 32px rgba(0,0,0,0.5);min-width:500px}
+#{{ID}} .sb-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a14,#111827);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .sb-content{position:relative;z-index:1;display:flex;align-items:stretch}
+#{{ID}} .sb-team{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 28px;min-width:160px}
+#{{ID}} .sb-team-name{font-weight:700;font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
+#{{ID}} .sb-team-score{font-weight:900;font-size:calc({{TITLE_SIZE}}px + 12px);color:{{TITLE_COLOR}};line-height:1;text-shadow:0 0 12px {{PRIMARY_COLOR}};animation:sb-score-glow-{{ID}} 2s ease-in-out infinite}
+@keyframes sb-score-glow-{{ID}}{0%,100%{text-shadow:0 0 8px {{PRIMARY_COLOR}}}50%{text-shadow:0 0 20px {{PRIMARY_COLOR}},0 0 40px {{PRIMARY_COLOR}}}}
+#{{ID}} .sb-team-left{border-right:1px solid rgba(255,255,255,0.06)}
+#{{ID}} .sb-team-right{border-left:1px solid rgba(255,255,255,0.06)}
+#{{ID}} .sb-center{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 20px;gap:2px;background:linear-gradient(180deg,rgba(0,255,136,0.05),transparent)}
+#{{ID}} .sb-vs{font-weight:900;font-size:16px;color:{{PRIMARY_COLOR}};letter-spacing:0.15em}
+#{{ID}} .sb-info{font-size:10px;color:{{PRIMARY_COLOR}};font-weight:700;letter-spacing:0.12em;text-transform:uppercase;animation:sb-info-pulse-{{ID}} 1.5s ease-in-out infinite}
+@keyframes sb-info-pulse-{{ID}}{0%,100%{opacity:1}50%{opacity:0.5}}
+#{{ID}} .sb-round{font-size:11px;color:{{SUBTITLE_COLOR}};opacity:0.7;letter-spacing:0.05em}
+#{{ID}} .sb-ticker-bar{position:relative;z-index:1;display:flex;align-items:stretch;background:linear-gradient(90deg,rgba(0,0,0,0.6),rgba(10,10,20,0.6));border-top:1px solid rgba(0,255,136,0.1);overflow:hidden}
+#{{ID}} .sb-ticker-label{display:flex;align-items:center;padding:4px 12px;background:{{PRIMARY_COLOR}};color:#000;font-weight:900;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+#{{ID}} .sb-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .sb-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:sb-scroll-{{ID}} 25s linear infinite;font-size:11px;color:{{SUBTITLE_COLOR}};opacity:0.7;padding:4px 0}
+@keyframes sb-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
+},
+"poll-results": {
+  name: "Poll Results",
+  description: "Live poll with 4 animated progress bars. Feed percentages via parameters JSON.",
+  color: "#00ff88",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#00ff88",SECONDARY_COLOR:"#3b82f6",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#aaaaaa",OPACITY:94,RADIUS:10,FONT_FAMILY:"Inter",TITLE_SIZE:22,SUBTITLE_SIZE:14,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="poll-card" data-slt-root>\n  <div class="poll-bg" aria-hidden="true"></div>\n  <div class="poll-content">\n    <div class="poll-header">\n      <div class="poll-badge">POLL</div>\n      <div class="poll-question" data-title>{{TITLE}}</div>\n    </div>\n    <div class="poll-options">\n      <div class="poll-option">\n        <div class="poll-option-row">\n          <span class="poll-option-label" data-opt1label>Option A</span>\n          <span class="poll-option-pct" data-opt1pct>0%</span>\n        </div>\n        <div class="poll-bar-track"><div class="poll-bar poll-bar-1" data-opt1bar style="width:0%"></div></div>\n      </div>\n      <div class="poll-option">\n        <div class="poll-option-row">\n          <span class="poll-option-label" data-opt2label>Option B</span>\n          <span class="poll-option-pct" data-opt2pct>0%</span>\n        </div>\n        <div class="poll-bar-track"><div class="poll-bar poll-bar-2" data-opt2bar style="width:0%"></div></div>\n      </div>\n      <div class="poll-option">\n        <div class="poll-option-row">\n          <span class="poll-option-label" data-opt3label>Option C</span>\n          <span class="poll-option-pct" data-opt3pct>0%</span>\n        </div>\n        <div class="poll-bar-track"><div class="poll-bar poll-bar-3" data-opt3bar style="width:0%"></div></div>\n      </div>\n      <div class="poll-option">\n        <div class="poll-option-row">\n          <span class="poll-option-label" data-opt4label>Option D</span>\n          <span class="poll-option-pct" data-opt4pct>0%</span>\n        </div>\n        <div class="poll-bar-track"><div class="poll-bar poll-bar-4" data-opt4bar style="width:0%"></div></div>\n      </div>\n    </div>\n    <div class="poll-footer">\n      <span class="poll-total" data-subtitle>{{SUBTITLE}}</span>\n    </div>\n  </div>\n</div>`,
+  script: `(function(id){var root=document.getElementById(id);if(!root)return;var observer=new MutationObserver(function(){for(var i=1;i<=4;i++){var pctEl=root.querySelector('[data-opt'+i+'pct]');var barEl=root.querySelector('[data-opt'+i+'bar]');if(pctEl&&barEl){var pct=parseInt(pctEl.textContent)||0;barEl.style.width=Math.min(pct,100)+'%';}}});observer.observe(root,{childList:true,subtree:true,characterData:true});})('{ID}');`,
+  css: `#{{ID}} .poll-card{position:relative;display:inline-block;border-radius:{{RADIUS}}px;overflow:hidden;font-family:{{FONT_FAMILY}},'Inter',system-ui,sans-serif;box-shadow:0 8px 32px rgba(0,0,0,0.5);min-width:380px;max-width:500px}
+#{{ID}} .poll-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a14,#111827);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .poll-content{position:relative;z-index:1;padding:16px 20px}
+#{{ID}} .poll-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+#{{ID}} .poll-badge{padding:3px 10px;background:{{PRIMARY_COLOR}};color:#000;font-weight:900;font-size:11px;letter-spacing:0.12em;border-radius:3px;flex-shrink:0}
+#{{ID}} .poll-question{font-weight:700;font-size:{{TITLE_SIZE}}px;color:{{TITLE_COLOR}};line-height:1.2}
+#{{ID}} .poll-options{display:flex;flex-direction:column;gap:8px}
+#{{ID}} .poll-option-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
+#{{ID}} .poll-option-label{font-size:14px;font-weight:600;color:{{TITLE_COLOR}}}
+#{{ID}} .poll-option-pct{font-size:14px;font-weight:900;color:{{PRIMARY_COLOR}};font-variant-numeric:tabular-nums}
+#{{ID}} .poll-bar-track{width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden}
+#{{ID}} .poll-bar{height:100%;border-radius:4px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1);min-width:0}
+#{{ID}} .poll-bar-1{background:{{PRIMARY_COLOR}};box-shadow:0 0 8px {{PRIMARY_COLOR}}}
+#{{ID}} .poll-bar-2{background:{{SECONDARY_COLOR}};box-shadow:0 0 8px {{SECONDARY_COLOR}}}
+#{{ID}} .poll-bar-3{background:#f59e0b;box-shadow:0 0 8px #f59e0b}
+#{{ID}} .poll-bar-4{background:#ef4444;box-shadow:0 0 8px #ef4444}
+#{{ID}} .poll-footer{margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06)}
+#{{ID}} .poll-total{font-size:12px;color:{{SUBTITLE_COLOR}};opacity:0.7}`
+},
+"countdown": {
+  name: "Countdown Timer",
+  description: "Self-contained countdown with glowing digits, blinking colons, and progress bar. Set target via parameters JSON.",
+  color: "#00ff88",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#00ff88",SECONDARY_COLOR:"#00bfff",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#cccccc",OPACITY:94,RADIUS:8,FONT_FAMILY:"Orbitron",TITLE_SIZE:48,SUBTITLE_SIZE:14,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="cd-card" data-slt-root>\n  <div class="cd-bg" aria-hidden="true"></div>\n  <div class="cd-glow" aria-hidden="true"></div>\n  <div class="cd-content">\n    <div class="cd-label" data-title>{{TITLE}}</div>\n    <div class="cd-timer">\n      <div class="cd-digit-group">\n        <span class="cd-digit" data-hours>00</span>\n        <span class="cd-unit">HRS</span>\n      </div>\n      <span class="cd-sep">:</span>\n      <div class="cd-digit-group">\n        <span class="cd-digit" data-minutes>00</span>\n        <span class="cd-unit">MIN</span>\n      </div>\n      <span class="cd-sep">:</span>\n      <div class="cd-digit-group">\n        <span class="cd-digit" data-seconds>00</span>\n        <span class="cd-unit">SEC</span>\n      </div>\n    </div>\n    <div class="cd-subtitle" data-subtitle>{{SUBTITLE}}</div>\n  </div>\n  <div class="cd-progress-track" aria-hidden="true">\n    <div class="cd-progress-bar" data-progress style="width:100%"></div>\n  </div>\n</div>\n<span data-target style="display:none"></span>\n<span data-duration style="display:none"></span>`,
+  script: `(function(id){var root=document.getElementById(id);if(!root)return;var hoursEl=root.querySelector('[data-hours]');var minsEl=root.querySelector('[data-minutes]');var secsEl=root.querySelector('[data-seconds]');var progressEl=root.querySelector('[data-progress]');if(!hoursEl||!minsEl||!secsEl)return;var targetTime=null;var totalDuration=null;function parseTarget(){var targetSpan=root.querySelector('[data-target]');var durationSpan=root.querySelector('[data-duration]');if(targetSpan&&targetSpan.textContent.trim()){var t=new Date(targetSpan.textContent.trim()).getTime();if(!isNaN(t)&&t!==targetTime){targetTime=t;if(!totalDuration)totalDuration=Math.max(0,t-Date.now());}}else if(durationSpan&&durationSpan.textContent.trim()){var secs=parseInt(durationSpan.textContent.trim());if(!isNaN(secs)&&secs>0){if(!targetTime||totalDuration!==secs*1000){totalDuration=secs*1000;targetTime=Date.now()+totalDuration;}}}}function pad(n){return String(n).padStart(2,'0');}function tick(){parseTarget();if(!targetTime)return;var remaining=Math.max(0,targetTime-Date.now());var totalSec=Math.floor(remaining/1000);var h=Math.floor(totalSec/3600);var m=Math.floor((totalSec%3600)/60);var s=totalSec%60;hoursEl.textContent=pad(h);minsEl.textContent=pad(m);secsEl.textContent=pad(s);if(progressEl&&totalDuration>0){var pct=Math.max(0,(remaining/totalDuration)*100);progressEl.style.width=pct+'%';}if(remaining<=0){var timerEl=root.querySelector('.cd-timer');if(timerEl)timerEl.classList.add('cd-done');}}setInterval(tick,250);tick();})('{ID}');`,
+  css: `#{{ID}} .cd-card{position:relative;display:inline-block;border-radius:{{RADIUS}}px;overflow:hidden;font-family:{{FONT_FAMILY}},'Orbitron',system-ui,sans-serif;box-shadow:0 0 20px rgba(0,255,136,0.15),0 8px 32px rgba(0,0,0,0.5);min-width:340px}
+#{{ID}} .cd-bg{position:absolute;inset:0;background:linear-gradient(135deg,#050510,#0a0a1a);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .cd-glow{position:absolute;inset:-1px;border-radius:inherit;border:1px solid {{PRIMARY_COLOR}};opacity:0.3;pointer-events:none;animation:cd-border-glow-{{ID}} 3s ease-in-out infinite}
+@keyframes cd-border-glow-{{ID}}{0%,100%{opacity:0.2;box-shadow:inset 0 0 8px {{PRIMARY_COLOR}}}50%{opacity:0.5;box-shadow:inset 0 0 20px {{PRIMARY_COLOR}}}}
+#{{ID}} .cd-content{position:relative;z-index:1;padding:20px 28px 16px;text-align:center}
+#{{ID}} .cd-label{font-weight:700;font-size:{{SUBTITLE_SIZE}}px;color:{{PRIMARY_COLOR}};text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px}
+#{{ID}} .cd-timer{display:flex;align-items:center;justify-content:center;gap:4px}
+#{{ID}} .cd-digit-group{display:flex;flex-direction:column;align-items:center}
+#{{ID}} .cd-digit{font-weight:900;font-size:{{TITLE_SIZE}}px;color:{{TITLE_COLOR}};line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 0 12px {{PRIMARY_COLOR}};min-width:2.2ch;text-align:center}
+#{{ID}} .cd-unit{font-size:9px;color:{{SUBTITLE_COLOR}};opacity:0.5;letter-spacing:0.15em;margin-top:2px}
+#{{ID}} .cd-sep{font-size:calc({{TITLE_SIZE}}px - 8px);color:{{PRIMARY_COLOR}};font-weight:300;opacity:0.6;animation:cd-blink-{{ID}} 1s step-end infinite;align-self:flex-start;margin-top:2px}
+@keyframes cd-blink-{{ID}}{0%,100%{opacity:0.6}50%{opacity:0}}
+#{{ID}} .cd-subtitle{font-size:12px;color:{{SUBTITLE_COLOR}};opacity:0.6;margin-top:8px;letter-spacing:0.04em}
+#{{ID}} .cd-timer.cd-done .cd-digit{color:{{PRIMARY_COLOR}};animation:cd-flash-{{ID}} 0.5s ease-in-out infinite}
+@keyframes cd-flash-{{ID}}{0%,100%{opacity:1}50%{opacity:0.3}}
+#{{ID}} .cd-progress-track{position:relative;z-index:1;height:3px;background:rgba(255,255,255,0.06)}
+#{{ID}} .cd-progress-bar{height:100%;background:linear-gradient(90deg,{{PRIMARY_COLOR}},{{SECONDARY_COLOR}});transition:width 0.3s linear;box-shadow:0 0 8px {{PRIMARY_COLOR}}}`
+},
+"network-bar-wide": {
+  name: "Network Bar Wide",
+  description: "Full-width CNN-style bar with scrolling ticker. Cyberpunk matrix palette.",
+  color: "#00ff88",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#00ff88",SECONDARY_COLOR:"#0a0a0a",TITLE_COLOR:"#f9fafb",SUBTITLE_COLOR:"#cccccc",OPACITY:92,RADIUS:0,FONT_FAMILY:"Orbitron",TITLE_SIZE:36,SUBTITLE_SIZE:20,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="nbarw" data-slt-root>\n  <div class="nbarw-topbar">\n    <div class="nbarw-accent-edge" aria-hidden="true"></div>\n    <div class="nbarw-card">\n      <div class="nbar-accent" aria-hidden="true"></div>\n      <div class="nbar-content">\n        <div class="nbar-title" data-title>{{TITLE}}</div>\n        <span class="nbar-sep" aria-hidden="true">|</span>\n        <div class="nbar-subtitle" data-subtitle>{{SUBTITLE}}</div>\n      </div>\n    </div>\n    <div class="nbarw-headline" aria-hidden="true">\n      <span data-headline>{{TITLE}}</span>\n    </div>\n  </div>\n  <div class="nbarw-ticker-bar">\n    <div class="nbarw-ticker-label">LIVE</div>\n    <div class="nbarw-ticker-track">\n      <div class="nbarw-ticker-scroll">\n        <span data-ticker>{{SUBTITLE}} \u2014 Stay tuned for more updates \u2014 {{TITLE}} \u2014 Live coverage continues</span>\n        <span data-ticker aria-hidden="true">{{SUBTITLE}} \u2014 Stay tuned for more updates \u2014 {{TITLE}} \u2014 Live coverage continues</span>\n      </div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .nbarw{position:relative;width:100vw;font-family:{{FONT_FAMILY}},'Orbitron','Segoe UI',system-ui,sans-serif}
+#{{ID}} .nbarw-topbar{display:flex;align-items:stretch;background:linear-gradient(135deg,rgba(10,10,10,calc({{OPACITY}}/100)),rgba(20,20,20,calc({{OPACITY}}/100)));border-bottom:1px solid rgba(0,255,136,0.15)}
+#{{ID}} .nbarw-accent-edge{width:4px;flex-shrink:0;background:{{PRIMARY_COLOR}};box-shadow:0 0 12px {{PRIMARY_COLOR}}}
+#{{ID}} .nbarw-card{display:inline-flex;align-items:stretch;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.08)}
+#{{ID}} .nbar-accent{width:6px;flex-shrink:0;background:{{PRIMARY_COLOR}};box-shadow:0 0 12px {{PRIMARY_COLOR}}}
+#{{ID}} .nbar-content{display:flex;align-items:center;gap:14px;padding:12px 24px}
+#{{ID}} .nbar-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.1;color:{{TITLE_COLOR}};text-transform:uppercase;letter-spacing:0.08em;text-shadow:0 0 8px {{PRIMARY_COLOR}},0 0 2px #fff;white-space:nowrap}
+#{{ID}} .nbar-sep{color:{{PRIMARY_COLOR}};font-size:{{TITLE_SIZE}}px;opacity:0.5;font-weight:300}
+#{{ID}} .nbar-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};opacity:0.9;letter-spacing:0.04em;white-space:nowrap}
+#{{ID}} .nbarw-headline{flex:1;display:flex;align-items:center;padding:0 24px;font-size:calc({{SUBTITLE_SIZE}}px + 2px);color:{{SUBTITLE_COLOR}};letter-spacing:0.03em;overflow:hidden;white-space:nowrap}
+#{{ID}} .nbarw-ticker-bar{display:flex;align-items:stretch;background:linear-gradient(90deg,rgba(0,0,0,calc({{OPACITY}}/100)),rgba(15,15,15,calc({{OPACITY}}/100)));overflow:hidden}
+#{{ID}} .nbarw-ticker-label{display:flex;align-items:center;padding:6px 14px;background:{{PRIMARY_COLOR}};color:#000;font-weight:900;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+#{{ID}} .nbarw-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .nbarw-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:nbarw-scroll-{{ID}} 25s linear infinite;font-size:14px;color:{{SUBTITLE_COLOR}};letter-spacing:0.02em;padding:6px 0}
+@keyframes nbarw-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
+},
+"anchor-card-wide": {
+  name: "Anchor Card Wide",
+  description: "Full-width bar with avatar card embedded and colored scrolling ticker.",
+  color: "#3b82f6",
+  hasAvatar: true,
+  defaults: { PRIMARY_COLOR:"#3b82f6",SECONDARY_COLOR:"#111827",TITLE_COLOR:"#f9fafb",SUBTITLE_COLOR:"#d1d5db",OPACITY:90,RADIUS:0,FONT_FAMILY:"Segoe UI",TITLE_SIZE:36,SUBTITLE_SIZE:20,AVATAR_WIDTH:64,AVATAR_HEIGHT:64,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="ancw" data-slt-root>\n  <div class="ancw-topbar">\n    <div class="ancw-card">\n      <div class="anchor-bg" aria-hidden="true"></div>\n      <div class="anchor-stripe" aria-hidden="true"></div>\n      <div class="anchor-content">\n        <img class="anchor-avatar" src="{{PROFILE_PICTURE_URL}}" alt="" onerror="this.style.display='none'" />\n        <div class="anchor-text">\n          <div class="anchor-title" data-title>{{TITLE}}</div>\n          <div class="anchor-subtitle" data-subtitle>{{SUBTITLE}}</div>\n        </div>\n      </div>\n    </div>\n    <div class="ancw-headline">\n      <span data-headline>{{TITLE}}</span>\n    </div>\n  </div>\n  <div class="ancw-ticker-bar">\n    <div class="ancw-ticker-label">NOW</div>\n    <div class="ancw-ticker-track">\n      <div class="ancw-ticker-scroll">\n        <span data-ticker>{{SUBTITLE}} \u2014 Live now \u2014 {{TITLE}} \u2014 Follow for updates</span>\n        <span data-ticker aria-hidden="true">{{SUBTITLE}} \u2014 Live now \u2014 {{TITLE}} \u2014 Follow for updates</span>\n      </div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .ancw{position:relative;width:100vw;font-family:{{FONT_FAMILY}},'Segoe UI',system-ui,sans-serif}
+#{{ID}} .ancw-topbar{display:flex;align-items:stretch;background:linear-gradient(135deg,rgba(17,24,39,calc({{OPACITY}}/100)),rgba(31,41,55,calc({{OPACITY}}/100)));border-bottom:1px solid rgba(255,255,255,0.06)}
+#{{ID}} .ancw-card{position:relative;display:inline-flex;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.08)}
+#{{ID}} .anchor-bg{position:absolute;inset:0;background:linear-gradient(135deg,#111827,#1f2937);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .anchor-stripe{position:absolute;left:0;top:0;bottom:0;width:5px;background:{{PRIMARY_COLOR}}}
+#{{ID}} .anchor-content{position:relative;z-index:1;display:flex;align-items:center;gap:16px;padding:14px 22px 14px 20px}
+#{{ID}} .anchor-avatar{width:{{AVATAR_WIDTH}}px;height:{{AVATAR_HEIGHT}}px;border-radius:50%;object-fit:cover;border:3px solid {{PRIMARY_COLOR}};flex-shrink:0;background:rgba(255,255,255,0.06)}
+#{{ID}} .anchor-avatar:not([src]),#{{ID}} .anchor-avatar[src=""],#{{ID}} .anchor-avatar[src="./"]{display:none!important}
+#{{ID}} .anchor-text{display:flex;flex-direction:column;gap:3px}
+#{{ID}} .anchor-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:{{TITLE_COLOR}};white-space:nowrap}
+#{{ID}} .anchor-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};opacity:0.85;white-space:nowrap}
+#{{ID}} .ancw-headline{flex:1;display:flex;align-items:center;padding:0 24px;font-size:calc({{SUBTITLE_SIZE}}px + 2px);color:{{SUBTITLE_COLOR}};overflow:hidden;white-space:nowrap}
+#{{ID}} .ancw-ticker-bar{display:flex;align-items:stretch;background:{{PRIMARY_COLOR}};overflow:hidden}
+#{{ID}} .ancw-ticker-label{display:flex;align-items:center;padding:5px 14px;background:rgba(0,0,0,0.25);color:#fff;font-weight:900;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+#{{ID}} .ancw-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .ancw-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:ancw-scroll-{{ID}} 25s linear infinite;font-size:13px;font-weight:600;color:#fff;padding:5px 0}
+@keyframes ancw-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
+},
+"corporate-clean-wide": {
+  name: "Corporate Clean Wide",
+  description: "Full-width light bar with avatar card and gradient scrolling ticker.",
+  color: "#2563eb",
+  hasAvatar: true,
+  defaults: { PRIMARY_COLOR:"#2563eb",SECONDARY_COLOR:"#7c3aed",TITLE_COLOR:"#111827",SUBTITLE_COLOR:"#6b7280",OPACITY:96,RADIUS:0,FONT_FAMILY:"Segoe UI",TITLE_SIZE:34,SUBTITLE_SIZE:18,AVATAR_WIDTH:52,AVATAR_HEIGHT:52,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="corpw" data-slt-root>\n  <div class="corpw-topbar">\n    <div class="corpw-card">\n      <div class="corp-bg" aria-hidden="true"></div>\n      <div class="corp-content">\n        <img class="corp-avatar" src="{{PROFILE_PICTURE_URL}}" alt="" onerror="this.style.display='none'" />\n        <div class="corp-text">\n          <div class="corp-title" data-title>{{TITLE}}</div>\n          <div class="corp-subtitle" data-subtitle>{{SUBTITLE}}</div>\n        </div>\n      </div>\n    </div>\n    <div class="corpw-headline">\n      <span data-headline>{{TITLE}}</span>\n    </div>\n  </div>\n  <div class="corpw-ticker-bar">\n    <div class="corpw-ticker-label">INFO</div>\n    <div class="corpw-ticker-track">\n      <div class="corpw-ticker-scroll">\n        <span data-ticker>{{SUBTITLE}} \u2014 Webinar in progress \u2014 {{TITLE}} \u2014 Questions welcome</span>\n        <span data-ticker aria-hidden="true">{{SUBTITLE}} \u2014 Webinar in progress \u2014 {{TITLE}} \u2014 Questions welcome</span>\n      </div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .corpw{position:relative;width:100vw;font-family:{{FONT_FAMILY}},'Segoe UI',system-ui,sans-serif}
+#{{ID}} .corpw-topbar{display:flex;align-items:stretch;background:rgba(255,255,255,calc({{OPACITY}}/100));box-shadow:0 -2px 12px rgba(0,0,0,0.08)}
+#{{ID}} .corpw-card{position:relative;display:inline-flex;flex-shrink:0;border-right:1px solid rgba(0,0,0,0.08)}
+#{{ID}} .corp-bg{position:absolute;inset:0;background:#fff;opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .corp-content{position:relative;z-index:1;display:flex;align-items:center;gap:14px;padding:16px 24px}
+#{{ID}} .corp-avatar{width:{{AVATAR_WIDTH}}px;height:{{AVATAR_HEIGHT}}px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#f3f4f6}
+#{{ID}} .corp-avatar:not([src]),#{{ID}} .corp-avatar[src=""],#{{ID}} .corp-avatar[src="./"]{display:none!important}
+#{{ID}} .corp-text{display:flex;flex-direction:column;gap:2px}
+#{{ID}} .corp-title{font-weight:600;font-size:{{TITLE_SIZE}}px;line-height:1.2;color:{{TITLE_COLOR}};white-space:nowrap}
+#{{ID}} .corp-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};white-space:nowrap}
+#{{ID}} .corpw-headline{flex:1;display:flex;align-items:center;padding:0 24px;font-size:calc({{SUBTITLE_SIZE}}px + 2px);color:{{SUBTITLE_COLOR}};overflow:hidden;white-space:nowrap}
+#{{ID}} .corpw-ticker-bar{display:flex;align-items:stretch;background:linear-gradient(90deg,{{PRIMARY_COLOR}},{{SECONDARY_COLOR}});overflow:hidden}
+#{{ID}} .corpw-ticker-label{display:flex;align-items:center;padding:5px 14px;background:rgba(0,0,0,0.15);color:#fff;font-weight:900;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+#{{ID}} .corpw-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .corpw-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:corpw-scroll-{{ID}} 25s linear infinite;font-size:13px;font-weight:600;color:#fff;padding:5px 0}
+@keyframes corpw-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
+},
+"breaking-news-wide": {
+  name: "Breaking News Wide",
+  description: "Full-width breaking news bar with red ticker and scrolling alerts.",
+  color: "#dc2626",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#dc2626",SECONDARY_COLOR:"#1a1a1a",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#d1d5db",OPACITY:94,RADIUS:0,FONT_FAMILY:"Segoe UI",TITLE_SIZE:38,SUBTITLE_SIZE:20,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="brkw" data-slt-root>\n  <div class="brkw-topbar">\n    <div class="brkw-card">\n      <div class="brk-bg" aria-hidden="true"></div>\n      <div class="brk-content">\n        <div class="brk-badge">BREAKING</div>\n        <div class="brk-text">\n          <div class="brk-title" data-title>{{TITLE}}</div>\n          <div class="brk-subtitle" data-subtitle>{{SUBTITLE}}</div>\n        </div>\n      </div>\n    </div>\n    <div class="brkw-headline">\n      <span data-headline>{{TITLE}}</span>\n    </div>\n  </div>\n  <div class="brkw-ticker-bar">\n    <div class="brkw-ticker-label">ALERT</div>\n    <div class="brkw-ticker-track">\n      <div class="brkw-ticker-scroll">\n        <span data-ticker>{{SUBTITLE}} \u2014 Breaking development \u2014 {{TITLE}} \u2014 More details to follow</span>\n        <span data-ticker aria-hidden="true">{{SUBTITLE}} \u2014 Breaking development \u2014 {{TITLE}} \u2014 More details to follow</span>\n      </div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .brkw{position:relative;width:100vw;font-family:{{FONT_FAMILY}},'Segoe UI',system-ui,sans-serif}
+#{{ID}} .brkw-topbar{display:flex;align-items:stretch;background:linear-gradient(135deg,rgba(26,26,26,calc({{OPACITY}}/100)),rgba(13,13,13,calc({{OPACITY}}/100)));border-bottom:2px solid {{PRIMARY_COLOR}}}
+#{{ID}} .brkw-card{position:relative;display:inline-flex;align-items:stretch;flex-shrink:0;overflow:hidden}
+#{{ID}} .brk-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1a1a1a,#0d0d0d);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .brk-content{position:relative;z-index:1;display:flex;align-items:stretch}
+#{{ID}} .brk-badge{display:flex;align-items:center;padding:12px 18px;background:{{PRIMARY_COLOR}};color:#fff;font-weight:900;font-size:18px;letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap;animation:brkw-pulse-{{ID}} 2s ease-in-out infinite}
+@keyframes brkw-pulse-{{ID}}{0%,100%{opacity:1}50%{opacity:0.8}}
+#{{ID}} .brk-text{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:12px 22px;border-right:1px solid rgba(255,255,255,0.08)}
+#{{ID}} .brk-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:{{TITLE_COLOR}};white-space:nowrap}
+#{{ID}} .brk-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};opacity:0.85;white-space:nowrap}
+#{{ID}} .brkw-headline{flex:1;display:flex;align-items:center;padding:0 24px;font-size:calc({{SUBTITLE_SIZE}}px + 2px);color:{{SUBTITLE_COLOR}};overflow:hidden;white-space:nowrap}
+#{{ID}} .brkw-ticker-bar{display:flex;align-items:stretch;background:{{PRIMARY_COLOR}};overflow:hidden}
+#{{ID}} .brkw-ticker-label{display:flex;align-items:center;padding:5px 14px;background:rgba(0,0,0,0.3);color:#fff;font-weight:900;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+#{{ID}} .brkw-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .brkw-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:brkw-scroll-{{ID}} 22s linear infinite;font-size:13px;font-weight:700;color:#fff;letter-spacing:0.02em;padding:5px 0}
+@keyframes brkw-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
+},
+"lower-doc-wide": {
+  name: "Lower Documentary Wide",
+  description: "Full-width dark cinematic bar with italic scrolling ticker and warm accent.",
+  color: "#d4a574",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#d4a574",SECONDARY_COLOR:"#0f0f0f",TITLE_COLOR:"#f5f5f4",SUBTITLE_COLOR:"#a8a29e",OPACITY:95,RADIUS:0,FONT_FAMILY:"Georgia",TITLE_SIZE:40,SUBTITLE_SIZE:20,ANIM_IN:"animate__fadeIn",ANIM_OUT:"animate__fadeOut" },
+  html: `<div class="ldocw" data-slt-root>\n  <div class="ldocw-topbar">\n    <div class="ldocw-card">\n      <div class="ldoc-bg" aria-hidden="true"></div>\n      <div class="ldoc-content">\n        <div class="ldoc-title" data-title>{{TITLE}}</div>\n        <div class="ldoc-subtitle" data-subtitle>{{SUBTITLE}}</div>\n      </div>\n    </div>\n    <div class="ldocw-headline">\n      <span data-headline>{{TITLE}}</span>\n    </div>\n  </div>\n  <div class="ldocw-ticker-bar">\n    <div class="ldocw-ticker-rule" aria-hidden="true"></div>\n    <div class="ldocw-ticker-track">\n      <div class="ldocw-ticker-scroll">\n        <span data-ticker>{{SUBTITLE}} \u2014 Documentary series \u2014 {{TITLE}} \u2014 A deeper look</span>\n        <span data-ticker aria-hidden="true">{{SUBTITLE}} \u2014 Documentary series \u2014 {{TITLE}} \u2014 A deeper look</span>\n      </div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .ldocw{position:relative;width:100vw;font-family:{{FONT_FAMILY}},Georgia,'Times New Roman',serif}
+#{{ID}} .ldocw-topbar{display:flex;align-items:stretch;background:linear-gradient(180deg,rgba(15,15,15,calc({{OPACITY}}/100)),rgba(25,25,25,calc({{OPACITY}}/100)))}
+#{{ID}} .ldocw-card{position:relative;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.06)}
+#{{ID}} .ldoc-bg{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,15,15,0.98),rgba(25,25,25,0.92));opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .ldoc-content{position:relative;z-index:1;padding:18px 28px 14px}
+#{{ID}} .ldoc-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.1;color:{{TITLE_COLOR}};letter-spacing:0.02em;white-space:nowrap}
+#{{ID}} .ldoc-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};margin-top:4px;opacity:0.75;font-style:italic;white-space:nowrap}
+#{{ID}} .ldocw-headline{flex:1;display:flex;align-items:center;padding:0 24px;font-size:calc({{SUBTITLE_SIZE}}px + 2px);color:{{SUBTITLE_COLOR}};overflow:hidden;white-space:nowrap;font-style:italic}
+#{{ID}} .ldocw-ticker-bar{display:flex;align-items:stretch;overflow:hidden;background:linear-gradient(90deg,rgba(15,15,15,calc({{OPACITY}}/100)),rgba(20,20,20,calc({{OPACITY}}/100)));border-top:1px solid rgba(255,255,255,0.04)}
+#{{ID}} .ldocw-ticker-rule{width:60px;flex-shrink:0;display:flex;align-items:center;background:linear-gradient(90deg,{{PRIMARY_COLOR}},transparent);padding:0 8px}
+#{{ID}} .ldocw-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .ldocw-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:ldocw-scroll-{{ID}} 28s linear infinite;font-size:13px;color:{{SUBTITLE_COLOR}};opacity:0.7;padding:6px 0;font-style:italic}
+@keyframes ldocw-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
+},
+"breaking-bowltv-wide": {
+  name: "Breaking — BowlTV Wide",
+  description: "Full-width BowlTV bar with cyan scrolling ticker and logo badge.",
+  color: "#51BFE2",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#51BFE2",SECONDARY_COLOR:"#368096",TITLE_COLOR:"#FFF2F2",SUBTITLE_COLOR:"#CCC2C2",OPACITY:95,RADIUS:0,FONT_FAMILY:"Montserrat",TITLE_SIZE:34,SUBTITLE_SIZE:18,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="btvw" data-slt-root>\n  <div class="btvw-topbar">\n    <div class="btvw-card">\n      <div class="btv-bg" aria-hidden="true"></div>\n      <div class="btv-content">\n        <div class="btv-badge-wrap">\n          <img class="btv-logo" src="https://static.maestro.io/media/5c09513f58dfae005af67a20/609565fe6e4c5d00a50a0736.png" alt="BowlTV" />\n          <div class="btv-badge">BREAKING</div>\n        </div>\n        <div class="btv-divider" aria-hidden="true"></div>\n        <div class="btv-text">\n          <div class="btv-title" data-title>{{TITLE}}</div>\n          <div class="btv-subtitle" data-subtitle>{{SUBTITLE}}</div>\n        </div>\n      </div>\n    </div>\n    <div class="btvw-headline">\n      <span data-headline>{{TITLE}}</span>\n    </div>\n  </div>\n  <div class="btvw-ticker-bar">\n    <div class="btvw-ticker-label">BOWLTV</div>\n    <div class="btvw-ticker-track">\n      <div class="btvw-ticker-scroll">\n        <span data-ticker>{{SUBTITLE}} \u2014 Live bowling coverage \u2014 {{TITLE}} \u2014 Results and standings updates</span>\n        <span data-ticker aria-hidden="true">{{SUBTITLE}} \u2014 Live bowling coverage \u2014 {{TITLE}} \u2014 Results and standings updates</span>\n      </div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .btvw{position:relative;width:100vw;font-family:{{FONT_FAMILY}},'Montserrat','Proxima Nova',system-ui,sans-serif}
+#{{ID}} .btvw-topbar{display:flex;align-items:stretch;background:linear-gradient(135deg,rgba(0,0,0,calc({{OPACITY}}/100)),rgba(26,26,26,calc({{OPACITY}}/100)));border-bottom:1px solid rgba(81,191,226,0.2)}
+#{{ID}} .btvw-card{position:relative;display:inline-flex;flex-shrink:0;border-right:1px solid rgba(81,191,226,0.15)}
+#{{ID}} .btv-bg{position:absolute;inset:0;background:linear-gradient(135deg,#000,#1a1a1a);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .btv-content{position:relative;z-index:1;display:flex;align-items:center}
+#{{ID}} .btv-badge-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px 18px;background:linear-gradient(180deg,rgba(81,191,226,0.15),rgba(81,191,226,0.05));border-right:1px solid rgba(81,191,226,0.2)}
+#{{ID}} .btv-logo{height:28px;width:auto;object-fit:contain;filter:brightness(1.1)}
+#{{ID}} .btv-badge{display:inline-block;padding:3px 12px;background:#FF0000;color:#fff;font-weight:900;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;border-radius:2px;animation:btvw-pulse-{{ID}} 2s ease-in-out infinite}
+@keyframes btvw-pulse-{{ID}}{0%,100%{opacity:1;box-shadow:0 0 8px rgba(255,0,0,0.5)}50%{opacity:0.85;box-shadow:0 0 16px rgba(255,0,0,0.8)}}
+#{{ID}} .btv-divider{width:3px;align-self:stretch;background:linear-gradient(180deg,transparent,#51BFE2,transparent)}
+#{{ID}} .btv-text{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:14px 24px}
+#{{ID}} .btv-title{font-weight:800;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:#FFF2F2;text-transform:uppercase;letter-spacing:0.03em;white-space:nowrap}
+#{{ID}} .btv-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:#CCC2C2;opacity:0.9;white-space:nowrap}
+#{{ID}} .btvw-headline{flex:1;display:flex;align-items:center;padding:0 24px;font-size:calc({{SUBTITLE_SIZE}}px + 2px);color:#CCC2C2;overflow:hidden;white-space:nowrap}
+#{{ID}} .btvw-ticker-bar{display:flex;align-items:stretch;background:linear-gradient(90deg,#51BFE2,#368096);overflow:hidden}
+#{{ID}} .btvw-ticker-label{display:flex;align-items:center;padding:5px 14px;background:rgba(0,0,0,0.3);color:#fff;font-weight:900;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+#{{ID}} .btvw-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .btvw-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:btvw-scroll-{{ID}} 24s linear infinite;font-size:13px;font-weight:700;color:#fff;padding:5px 0}
+@keyframes btvw-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
+},
+"neon-pulse-wide": {
+  name: "Neon Pulse Wide",
+  description: "Full-width bar with neon-pulse card embedded and glowing scrolling ticker.",
+  color: "#00ff88",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#00ff88",SECONDARY_COLOR:"#00bfff",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#cccccc",OPACITY:95,RADIUS:6,FONT_FAMILY:"Orbitron",TITLE_SIZE:34,SUBTITLE_SIZE:18,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="neonw" data-slt-root>\n  <div class="neonw-topbar">\n    <div class="neonw-card-wrap">\n      <div class="neon-card">\n        <div class="neon-bg" aria-hidden="true"></div>\n        <div class="neon-glow-border" aria-hidden="true"></div>\n        <div class="neon-content">\n          <div class="neon-title" data-title>{{TITLE}}</div>\n          <div class="neon-subtitle" data-subtitle>{{SUBTITLE}}</div>\n        </div>\n      </div>\n    </div>\n    <div class="neonw-headline">\n      <span data-headline>{{TITLE}}</span>\n    </div>\n  </div>\n  <div class="neonw-ticker-bar">\n    <div class="neonw-ticker-label">LIVE</div>\n    <div class="neonw-ticker-track">\n      <div class="neonw-ticker-scroll">\n        <span data-ticker>{{SUBTITLE}} \u2014 Stream update \u2014 {{TITLE}} \u2014 Stay connected</span>\n        <span data-ticker aria-hidden="true">{{SUBTITLE}} \u2014 Stream update \u2014 {{TITLE}} \u2014 Stay connected</span>\n      </div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .neonw{position:relative;width:100vw;font-family:{{FONT_FAMILY}},'Orbitron',system-ui,sans-serif}
+#{{ID}} .neonw-topbar{display:flex;align-items:stretch;background:linear-gradient(135deg,rgba(5,5,16,calc({{OPACITY}}/100)),rgba(10,10,26,calc({{OPACITY}}/100)));border-bottom:1px solid rgba(0,255,136,0.1)}
+#{{ID}} .neonw-card-wrap{flex-shrink:0;padding:8px 0 8px 8px}
+#{{ID}} .neon-card{position:relative;display:inline-block;border-radius:{{RADIUS}}px;overflow:visible;animation:neonw-breathe-{{ID}} 3s ease-in-out infinite}
+@keyframes neonw-breathe-{{ID}}{0%,100%{filter:drop-shadow(0 0 8px {{PRIMARY_COLOR}}) drop-shadow(0 0 20px {{PRIMARY_COLOR}})}50%{filter:drop-shadow(0 0 16px {{PRIMARY_COLOR}}) drop-shadow(0 0 40px {{PRIMARY_COLOR}}) drop-shadow(0 0 60px {{PRIMARY_COLOR}})}}
+#{{ID}} .neon-bg{position:absolute;inset:0;background:linear-gradient(135deg,#050510,#0a0a1a);opacity:calc({{OPACITY}}/100);border-radius:inherit;pointer-events:none}
+#{{ID}} .neon-glow-border{position:absolute;inset:-2px;border-radius:inherit;background:linear-gradient(var(--neon-angle-w-{{ID}},0deg),{{PRIMARY_COLOR}},{{SECONDARY_COLOR}},#ff00ff,{{PRIMARY_COLOR}});z-index:0;animation:neonw-border-spin-{{ID}} 4s linear infinite}
+@keyframes neonw-border-spin-{{ID}}{0%{--neon-angle-w-{{ID}}:0deg}100%{--neon-angle-w-{{ID}}:360deg}}
+#{{ID}} .neon-glow-border::before{content:'';position:absolute;inset:2px;background:linear-gradient(135deg,#050510,#0a0a1a);border-radius:inherit;z-index:1}
+#{{ID}} .neon-content{position:relative;z-index:2;padding:14px 24px;display:flex;flex-direction:column;gap:3px}
+#{{ID}} .neon-title{font-weight:900;font-size:{{TITLE_SIZE}}px;line-height:1.1;color:#fff;text-transform:uppercase;letter-spacing:0.1em;text-shadow:0 0 7px {{PRIMARY_COLOR}},0 0 20px {{PRIMARY_COLOR}},0 0 42px {{PRIMARY_COLOR}};animation:neonw-flicker-{{ID}} 5s ease-in-out infinite;white-space:nowrap}
+@keyframes neonw-flicker-{{ID}}{0%,19%,21%,23%,25%,54%,56%,100%{text-shadow:0 0 7px {{PRIMARY_COLOR}},0 0 20px {{PRIMARY_COLOR}},0 0 42px {{PRIMARY_COLOR}};opacity:1}20%,24%,55%{text-shadow:none;opacity:0.85}}
+#{{ID}} .neon-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};letter-spacing:0.06em;opacity:0.8;white-space:nowrap}
+#{{ID}} .neonw-headline{flex:1;display:flex;align-items:center;padding:0 24px;font-size:calc({{SUBTITLE_SIZE}}px + 2px);color:{{SUBTITLE_COLOR}};overflow:hidden;white-space:nowrap;letter-spacing:0.03em}
+#{{ID}} .neonw-ticker-bar{display:flex;align-items:stretch;background:linear-gradient(90deg,rgba(5,5,16,calc({{OPACITY}}/100)),rgba(10,10,26,calc({{OPACITY}}/100)));overflow:hidden;border-top:1px solid rgba(0,255,136,0.15)}
+#{{ID}} .neonw-ticker-label{display:flex;align-items:center;padding:6px 14px;background:{{PRIMARY_COLOR}};color:#000;font-weight:900;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;box-shadow:0 0 12px {{PRIMARY_COLOR}}}
+#{{ID}} .neonw-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .neonw-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:neonw-scroll-{{ID}} 25s linear infinite;font-size:13px;color:{{SUBTITLE_COLOR}};padding:6px 0;text-shadow:0 0 4px {{PRIMARY_COLOR}}}
+@keyframes neonw-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
+},
+"tiedye-trip-wide": {
+  name: "Tie-Dye Trip Wide",
+  description: "Full-width psychedelic bar with rainbow scrolling ticker and swirl background.",
+  color: "#ff006e",
+  hasAvatar: false,
+  defaults: { PRIMARY_COLOR:"#ff006e",SECONDARY_COLOR:"#8338ec",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#ffffff",OPACITY:85,RADIUS:0,FONT_FAMILY:"Fredoka",TITLE_SIZE:36,SUBTITLE_SIZE:18,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="dyew" data-slt-root>\n  <div class="dyew-topbar">\n    <div class="dyew-swirl" aria-hidden="true"></div>\n    <div class="dyew-glass" aria-hidden="true"></div>\n    <div class="dyew-card-wrap">\n      <div class="dye-title" data-title>{{TITLE}}</div>\n      <div class="dye-subtitle" data-subtitle>{{SUBTITLE}}</div>\n    </div>\n    <div class="dyew-headline">\n      <span data-headline>{{TITLE}}</span>\n    </div>\n  </div>\n  <div class="dyew-ticker-bar">\n    <div class="dyew-ticker-label">VIBES</div>\n    <div class="dyew-ticker-track">\n      <div class="dyew-ticker-scroll">\n        <span data-ticker>{{SUBTITLE}} \u2014 Good vibes only \u2014 {{TITLE}} \u2014 Peace love stream</span>\n        <span data-ticker aria-hidden="true">{{SUBTITLE}} \u2014 Good vibes only \u2014 {{TITLE}} \u2014 Peace love stream</span>\n      </div>\n    </div>\n  </div>\n</div>`,
+  css: `#{{ID}} .dyew{position:relative;width:100vw;font-family:{{FONT_FAMILY}},'Fredoka','Righteous',system-ui,sans-serif;animation:dyew-hue-{{ID}} 8s linear infinite}
+@keyframes dyew-hue-{{ID}}{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+#{{ID}} .dyew-topbar{position:relative;display:flex;align-items:stretch;overflow:hidden;min-height:70px}
+#{{ID}} .dyew-swirl{position:absolute;inset:-50%;width:200%;height:300%;background:radial-gradient(circle at 30% 40%,#ff006e 0%,transparent 50%),radial-gradient(circle at 70% 30%,#ffbe0b 0%,transparent 50%),radial-gradient(circle at 50% 80%,#8338ec 0%,transparent 50%),radial-gradient(circle at 20% 70%,#3a86ff 0%,transparent 50%),linear-gradient(135deg,#fb5607,#ff006e,#8338ec,#3a86ff,#06d6a0,#ffbe0b);opacity:calc({{OPACITY}}/100);animation:dyew-swirl-{{ID}} 12s ease-in-out infinite alternate;pointer-events:none}
+@keyframes dyew-swirl-{{ID}}{0%{transform:translate(0,0) rotate(0deg) scale(1)}50%{transform:translate(-10%,5%) rotate(180deg) scale(1.1)}100%{transform:translate(5%,-5%) rotate(360deg) scale(1.05)}}
+#{{ID}} .dyew-glass{position:absolute;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(2px);pointer-events:none}
+#{{ID}} .dyew-card-wrap{position:relative;z-index:2;flex-shrink:0;padding:14px 24px;border-right:1px solid rgba(255,255,255,0.15)}
+#{{ID}} .dye-title{font-weight:700;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:#fff;text-transform:uppercase;letter-spacing:0.06em;background:linear-gradient(90deg,#ff006e,#ffbe0b,#06d6a0,#3a86ff,#8338ec,#ff006e);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:dyew-text-{{ID}} 4s linear infinite;white-space:nowrap}
+@keyframes dyew-text-{{ID}}{0%{background-position:0% center}100%{background-position:200% center}}
+#{{ID}} .dye-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:#fff;opacity:0.9;text-shadow:1px 1px 0 rgba(0,0,0,0.5);white-space:nowrap}
+#{{ID}} .dyew-headline{position:relative;z-index:2;flex:1;display:flex;align-items:center;padding:0 24px;font-size:calc({{SUBTITLE_SIZE}}px + 2px);color:rgba(255,255,255,0.8);overflow:hidden;white-space:nowrap}
+#{{ID}} .dyew-ticker-bar{position:relative;display:flex;align-items:stretch;overflow:hidden;background:linear-gradient(90deg,#ff006e,#ffbe0b,#06d6a0,#3a86ff,#8338ec,#ff006e);background-size:300% auto;animation:dyew-ticker-bg-{{ID}} 6s linear infinite}
+@keyframes dyew-ticker-bg-{{ID}}{0%{background-position:0% center}100%{background-position:300% center}}
+#{{ID}} .dyew-ticker-label{display:flex;align-items:center;padding:5px 14px;background:rgba(0,0,0,0.4);color:#fff;font-weight:900;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+#{{ID}} .dyew-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .dyew-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:dyew-scroll-{{ID}} 22s linear infinite;font-size:13px;font-weight:700;color:#fff;padding:5px 0}
+@keyframes dyew-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
+},
+"headline-ticker-wide": {
+  name: "Headline Ticker Wide",
+  description: "Full-width bar with rotating headline card, orbiting glow, and scrolling ticker.",
+  color: "#00ff88",
+  hasAvatar: false,
+  hasHeadlines: true,
+  defaults: { PRIMARY_COLOR:"#00ff88",SECONDARY_COLOR:"#0a0a14",TITLE_COLOR:"#ffffff",SUBTITLE_COLOR:"#aaaaaa",OPACITY:94,RADIUS:0,FONT_FAMILY:"Inter",TITLE_SIZE:30,SUBTITLE_SIZE:16,ANIM_IN:"animate__fadeInUp",ANIM_OUT:"animate__fadeOutDown" },
+  html: `<div class="htkw" data-slt-root>\n  <div class="htkw-topbar">\n    <div class="htkw-card">\n      <div class="htk-bg" aria-hidden="true"></div>\n      <div class="htk-glow-edge" aria-hidden="true"></div>\n      <div class="htk-content">\n        <div class="htk-label">LIVE</div>\n        <div class="htk-text-wrap">\n          <div class="htk-title" data-title>{{TITLE}}</div>\n          <div class="htk-subtitle" data-subtitle>{{SUBTITLE}}</div>\n        </div>\n      </div>\n    </div>\n    <div class="htkw-headline">\n      <span data-headline>{{TITLE}}</span>\n    </div>\n  </div>\n  <div class="htkw-ticker-bar">\n    <div class="htkw-ticker-label">UPDATE</div>\n    <div class="htkw-ticker-track">\n      <div class="htkw-ticker-scroll">\n        <span data-ticker>{{SUBTITLE}} \u2014 Headlines rotating \u2014 {{TITLE}} \u2014 More stories ahead</span>\n        <span data-ticker aria-hidden="true">{{SUBTITLE}} \u2014 Headlines rotating \u2014 {{TITLE}} \u2014 More stories ahead</span>\n      </div>\n    </div>\n  </div>\n</div>\n<span data-headlines style="display:none">{{HEADLINES}}</span>`,
+  script: `(function(id){var root=document.getElementById(id);if(!root)return;var titleEl=root.querySelector('.htk-title');if(!titleEl)return;var idx=0;function getHL(){var el=root.parentElement&&root.parentElement.querySelector('[data-headlines]');if(el&&el.textContent.trim())return el.textContent.split('|').map(function(s){return s.trim()}).filter(Boolean);return[]}function cycle(){var h=getHL();if(h.length<2)return;idx=(idx+1)%h.length;titleEl.style.transition='opacity 0.4s ease,transform 0.4s ease';titleEl.style.opacity='0';titleEl.style.transform='translateY(-12px)';setTimeout(function(){titleEl.textContent=h[idx];titleEl.style.transform='translateY(12px)';void titleEl.offsetWidth;titleEl.style.opacity='1';titleEl.style.transform='translateY(0)'},420)}setInterval(cycle,5000)})('{ID}');`,
+  css: `#{{ID}} .htkw{position:relative;width:100vw;font-family:{{FONT_FAMILY}},'Inter',system-ui,sans-serif}
+#{{ID}} .htkw-topbar{display:flex;align-items:stretch;background:linear-gradient(135deg,rgba(10,10,20,calc({{OPACITY}}/100)),rgba(18,18,31,calc({{OPACITY}}/100)));border-bottom:1px solid rgba(255,255,255,0.06)}
+#{{ID}} .htkw-card{position:relative;display:inline-flex;align-items:stretch;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.08);overflow:hidden}
+#{{ID}} .htk-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a14,#12121f);opacity:calc({{OPACITY}}/100);pointer-events:none}
+#{{ID}} .htk-glow-edge{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;z-index:0}
+#{{ID}} .htk-glow-edge::before{content:'';position:absolute;width:120px;height:120px;background:radial-gradient(circle,{{PRIMARY_COLOR}} 0%,transparent 70%);opacity:0.7;animation:htkw-orbit-{{ID}} 4s linear infinite}
+@keyframes htkw-orbit-{{ID}}{0%{top:-60px;left:-60px}25%{top:-60px;left:calc(100% - 60px)}50%{top:calc(100% - 60px);left:calc(100% - 60px)}75%{top:calc(100% - 60px);left:-60px}100%{top:-60px;left:-60px}}
+#{{ID}} .htk-content{position:relative;z-index:2;display:flex;align-items:center}
+#{{ID}} .htk-label{display:flex;align-items:center;gap:6px;padding:14px 16px;background:{{PRIMARY_COLOR}};color:#000;font-weight:900;font-size:14px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap}
+#{{ID}} .htk-label::before{content:'';width:8px;height:8px;border-radius:50%;background:#fff;animation:htkw-dot-{{ID}} 1.5s ease-in-out infinite}
+@keyframes htkw-dot-{{ID}}{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+#{{ID}} .htk-text-wrap{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:12px 24px}
+#{{ID}} .htk-title{font-weight:900;font-size:{{TITLE_SIZE}}px;line-height:1.15;color:{{TITLE_COLOR}};text-transform:uppercase;letter-spacing:0.03em;white-space:nowrap}
+#{{ID}} .htk-subtitle{font-size:{{SUBTITLE_SIZE}}px;color:{{SUBTITLE_COLOR}};opacity:0.8;white-space:nowrap}
+#{{ID}} .htkw-headline{flex:1;display:flex;align-items:center;padding:0 24px;font-size:calc({{SUBTITLE_SIZE}}px + 2px);color:{{SUBTITLE_COLOR}};overflow:hidden;white-space:nowrap}
+#{{ID}} .htkw-ticker-bar{display:flex;align-items:stretch;background:linear-gradient(90deg,rgba(10,10,20,calc({{OPACITY}}/100)),rgba(18,18,31,calc({{OPACITY}}/100)));overflow:hidden;border-top:1px solid rgba(0,255,136,0.1)}
+#{{ID}} .htkw-ticker-label{display:flex;align-items:center;padding:5px 14px;background:{{PRIMARY_COLOR}};color:#000;font-weight:900;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+#{{ID}} .htkw-ticker-track{flex:1;overflow:hidden;display:flex;align-items:center}
+#{{ID}} .htkw-ticker-scroll{display:flex;gap:80px;white-space:nowrap;animation:htkw-scroll-{{ID}} 25s linear infinite;font-size:13px;color:{{SUBTITLE_COLOR}};padding:5px 0;text-shadow:0 0 4px {{PRIMARY_COLOR}}}
+@keyframes htkw-scroll-{{ID}}{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`
 }
 };
 
