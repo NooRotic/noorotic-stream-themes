@@ -4,26 +4,28 @@ Custom lower third templates for [VinciFlow](https://github.com/mmlTools/vinci-f
 
 ## How It Works
 
+VinciFlow imports themes as **ZIP packages** through its dock UI. This repo contains the source files and pre-built packages ready to import.
+
 ```mermaid
 flowchart TD
-    A["Clone or download this repo<br/><code>git clone ...</code><br/>(anywhere on your machine)"] --> B{"Want to preview<br/>before installing?"}
+    A["<b>Clone or download</b> this repo<br/><code>git clone ...</code><br/>(anywhere on your machine)"] --> B{"Want to preview<br/>before importing?"}
     B -- Yes --> C["Open <b>viewer/index.html</b><br/>in any browser"]
     C --> D["Browse themes, tweak colors,<br/>test animations, compare side-by-side"]
     D --> E["Pick the themes you want"]
     B -- No --> E
-    E --> F["Find your OBS themes directory"]
-    F --> G{"How is OBS installed?"}
-    G -- "Default" --> H["<code>C:\Program Files\obs-studio\data\themes\</code>"]
-    G -- "Portable / Custom" --> I["<code>&lt;your-obs-folder&gt;\data\themes\</code>"]
-    H --> J["Copy theme folders<br/>from <code>themes/</code> into that directory"]
-    I --> J
-    J --> K["Restart OBS or click<br/><b>Reload</b> in VinciFlow dock"]
-    K --> L["Themes available in<br/>VinciFlow theme selector"]
+    E --> F["Grab the ZIP from<br/><code>template_packages/</code>"]
+    F --> G["Open OBS with VinciFlow"]
+    G --> H["In VinciFlow dock:<br/>select a lower third slot"]
+    H --> I["Click <b>Import</b> button"]
+    I --> J["Select the <b>.zip</b> file"]
+    J --> K["Click <b>Save & Apply</b>"]
+    K --> L["Theme is live in OBS"]
 
     style A fill:#1a1a2e,stroke:#00ff88,color:#fff
     style C fill:#1a1a2e,stroke:#00bfff,color:#fff
     style D fill:#1a1a2e,stroke:#00bfff,color:#fff
-    style J fill:#1a1a2e,stroke:#ff6b35,color:#fff
+    style F fill:#1a1a2e,stroke:#ff6b35,color:#fff
+    style I fill:#1a1a2e,stroke:#ff6b35,color:#fff
     style L fill:#0d3320,stroke:#00ff88,color:#00ff88
 ```
 
@@ -34,53 +36,49 @@ flowchart TD
 
 ## Quick Start
 
+**Option A — Use pre-built packages (easiest):**
+
+1. Download or clone this repo
+2. Open OBS, go to the VinciFlow dock
+3. Select a lower third slot (or create a new one)
+4. Click **Import** and select a `.zip` from `template_packages/`
+5. Click **Save & Apply** — done
+
+**Option B — Build packages from source:**
+
 ```bash
-# 1. Clone this repo (anywhere — NOT inside OBS)
 git clone https://github.com/NooRotic/noorotic-stream-themes.git
 cd noorotic-stream-themes
 
-# 2. Preview themes (optional — no OBS needed)
-#    Open viewer/index.html in your browser
+# Build all ZIP packages
+./build.sh
 
-# 3. Copy the themes you want into your OBS VinciFlow themes directory
-#    Find your OBS themes path:
-#      Default install:   C:\Program Files\obs-studio\data\themes\
-#      Portable install:  <your-obs-folder>\data\themes\
+# Or build a specific theme
+./build.sh neon-pulse scoreboard
 
-# Copy a single theme:
-cp -r themes/neon-pulse "C:\Program Files\obs-studio\data\themes\neon-pulse"
-
-# Or copy all themes at once:
-cp -r themes/* "C:\Program Files\obs-studio\data\themes\"
-
-# 4. Restart OBS or click "Reload" in the VinciFlow dock
+# Packages appear in template_packages/
 ```
 
-> **Windows users:** Use `xcopy` or drag-and-drop in Explorer if you don't have `cp`. The key is to get each theme folder (e.g., `themes/neon-pulse/`) into your OBS `data/themes/` directory.
+Then import the `.zip` files through VinciFlow's dock UI.
 
-## Development Workflow
+> **Note:** VinciFlow imports themes into its internal state — you don't copy files to OBS directories. Each import applies to the currently selected lower third slot.
 
-This repo is a **standalone project** — clone it anywhere, develop here, then deploy to OBS by copying:
+## Repo Structure
 
 ```
-~/projects/noorotic-stream-themes/    <-- You develop here (git tracked)
-  themes/
+noorotic-stream-themes/
+  template_sources/         <-- Source files (HTML/CSS/JSON per theme)
     neon-pulse/
-    breaking-news/
     scoreboard/
     ...
-  viewer/
-    index.html                        <-- Preview tool (open in browser)
-
-C:\Program Files\obs-studio\          <-- OBS install (separate)
-  data/themes/
-    default/                          <-- VinciFlow built-in (don't touch)
-    neon-pulse/                       <-- Copied from this repo
-    breaking-news/                    <-- Copied from this repo
+  template_packages/        <-- Ready-to-import ZIP files
+    neon-pulse.zip
+    scoreboard.zip
     ...
+  viewer/
+    index.html              <-- Browser preview tool (no OBS needed)
+  build.sh                  <-- Builds ZIPs from sources
 ```
-
-**Preview without OBS:** Open `viewer/index.html` in any browser to preview, compare, and tweak all themes with live controls.
 
 ## Themes
 
@@ -125,16 +123,18 @@ Each button theme has a `-wide` variant that spans `100vw` with:
 | `lower-doc-wide` | Warm italic documentary ticker |
 | `headline-ticker-wide` | UPDATE ticker with rotating headlines |
 
-## Theme Structure
+## Theme Source Structure
 
-Each theme is a folder with three files:
+Each theme in `template_sources/` contains three files:
 
 ```
 theme-name/
   template.html   # HTML fragment (goes inside <li id="{{ID}}">)
   template.css    # Styles scoped to #{{ID}}
-  template.json   # Metadata + default values
+  template.json   # Metadata + default values for VinciFlow import
 ```
+
+The `build.sh` script packages these into ZIP files that VinciFlow can import.
 
 ## Live Data
 
@@ -179,7 +179,7 @@ All templates use VinciFlow's placeholder substitution system:
 A standalone HTML preview tool lives at `viewer/index.html`. Open it in any browser — no build step required.
 
 Features:
-- Live preview of all themes with adjustable controls
+- Live preview of all 21 themes with adjustable controls
 - Side-by-side comparison mode
 - Animation playback (entrance/exit + CSS loops)
 - Copy CSS/HTML to clipboard
